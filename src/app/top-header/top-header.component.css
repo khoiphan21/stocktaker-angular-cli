@@ -1,0 +1,40 @@
+body {
+    margin: 0px;
+}
+@media only screen and (max-height: 1080px) {
+    
+    /* For iPhone 6 */
+    .header {
+        background-color: rgb(204,204,204);
+        height: 10vh;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    h1 {
+        font-size: 1.3em;
+        color: rgb(51, 51, 51);
+    }
+    .side-menu-button-container {
+        height: 10vh;
+        width: 10vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .side-menu-button {
+        height: 6vh;
+        width: 6vh;
+        
+        background-image: url('assets/images/side-menu-button.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+}
