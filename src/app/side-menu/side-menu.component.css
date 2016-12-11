@@ -1,0 +1,8 @@
+.wrapper {
+    margin: 0;
+    padding: 0;
+    width: 90vw;
+    height: 100vh;
+    position: absolute;
+    background-color: rgb(200, 200, 200);
+}

@@ -14,13 +14,16 @@ import { StockQuantityManagerService } from './shared/managers/stock-quantity-ma
 import { MainManagerService } from './shared/managers/main-manager.service';
 import { SectionManagerService } from './shared/managers/section-manager.service';
 import { StocktakeManagerService } from './shared/managers/stocktake-manager.service';
+import { SideMenuComponent } from './side-menu/side-menu.component';
+import { SideMenuService } from './side-menu.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     TopHeaderComponent,
-    BlockHeadingComponent
+    BlockHeadingComponent,
+    SideMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,8 @@ import { StocktakeManagerService } from './shared/managers/stocktake-manager.ser
     StockQuantityManagerService,
     MainManagerService,
     SectionManagerService,
-    StocktakeManagerService
+    StocktakeManagerService,
+    SideMenuService
   ],
   bootstrap: [AppComponent]
 })
