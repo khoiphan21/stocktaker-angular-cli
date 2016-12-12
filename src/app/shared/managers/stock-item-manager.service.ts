@@ -1,21 +1,20 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Section } from '../classes/section';
-import { MainManagerService } from './main-manager.service';
 import { Category } from '../classes/category';
 import { SimpleList } from '../libraries/collections/simpleList';
+import { StockItem } from '../classes/stock-item';
+import * as _ from 'underscore';
 
 @Injectable()
-export class SectionManagerService {
-    sectionList: Section[];
+export class StockItemManagerService {
+    private sectionList: Section[];
+    private stockMap;
 
-    constructor(
-        private mainManager: MainManagerService
-    ) {
+    constructor() {
         this.sectionList = [];
+        this.stockMap = {};
         
         this.setupFakeData();
-        
-       
     }
 
     // Setup the fake data for all sections and categories
@@ -39,6 +38,38 @@ export class SectionManagerService {
 
         this.sectionList.push(warehouse);
         this.sectionList.push(sales);
+    }
+    
+    /**
+     * Get the list of items for the category of the given name
+     * 
+     * @param categoryName: the name of the category whose items 
+     *                      are to be retrieved
+     */
+    getItemListForCategory(categoryName: string) {
+        if (_.contains(_.allKeys(this.stockMap), categoryName)) {
+            return this.stockMap[categoryName];
+        }
+    }
+    
+    /**
+     * Add a new item to the map of stock items. The item will be 
+     * added to the value array of the given category key
+     * 
+     * @param item: the item to be added to the map
+     */
+    addNewItem(item: StockItem) {
+        let category: Category = item.category;
+        let categoryName: string = category.name;
+        
+        let itemList: StockItem[] = this.getItemListForCategory(categoryName);
+
+        // Add the actual item to the list
+        if (itemList != null) {
+            itemList.push(item);
+        } else {
+            console.log('Wrong category name: ' + categoryName);
+        }
     }
 
     getAllCategories(): SimpleList<Category> {

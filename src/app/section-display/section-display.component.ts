@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Section } from '../shared/classes/section';
-import { SectionManagerService } from '../shared/managers/section-manager.service';
 import { Category } from '../shared/classes/category';
+import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
 
 @Component({
   selector: 'app-section-display',
@@ -18,7 +18,7 @@ export class SectionDisplayComponent implements OnInit {
   private isContentShown = false; // initially content is not shown
 
   constructor(
-    private sectionManager: SectionManagerService
+    private stockItemManager: StockItemManagerService
   ) { }
 
   ngOnInit() {

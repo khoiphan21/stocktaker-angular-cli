@@ -11,8 +11,6 @@ import { TopHeaderComponent } from './top-header/top-header.component';
 import { BlockHeadingComponent } from './block-heading/block-heading.component';
 import { DashboardManagerService } from './shared/managers/dashboard-manager.service';
 import { StockQuantityManagerService } from './shared/managers/stock-quantity-manager.service';
-import { MainManagerService } from './shared/managers/main-manager.service';
-import { SectionManagerService } from './shared/managers/section-manager.service';
 import { StocktakeManagerService } from './shared/managers/stocktake-manager.service';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { SideMenuService } from './side-menu.service';
@@ -20,6 +18,7 @@ import { StockSetupComponent } from './stock-setup/stock-setup.component';
 import { SectionHeadingComponent } from './section-heading/section-heading.component';
 import { CategoryHeadingComponent } from './category-heading/category-heading.component';
 import { SectionDisplayComponent } from './section-display/section-display.component';
+import { StockItemManagerService } from './shared/managers/stock-item-manager.service';
 
 @NgModule({
   declarations: [
@@ -42,8 +41,7 @@ import { SectionDisplayComponent } from './section-display/section-display.compo
   providers: [
     DashboardManagerService,
     StockQuantityManagerService,
-    MainManagerService,
-    SectionManagerService,
+    StockItemManagerService,
     StocktakeManagerService,
     SideMenuService
   ],

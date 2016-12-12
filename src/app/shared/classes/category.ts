@@ -1,14 +1,14 @@
 import { Section } from './section';
-import { SectionManagerService } from '../managers/section-manager.service';
+import { StockItemManagerService } from '../managers/stock-item-manager.service';
 
 export class Category {
     private _name: string;
     private _section: Section;
 
-    getName(): string {
+    get name(): string {
         return this._name;
     }
-    changeName(name: string) {
+    set name(name: string) {
         this._name = name;
     }
     get getSection(): Section {
@@ -23,7 +23,7 @@ export class Category {
     }
 
     constructor(
-        private manager: SectionManagerService,
+        private manager: StockItemManagerService,
         name: string,
         section: Section
     ) {

@@ -1,12 +1,12 @@
-import { SectionManagerService } from '../managers/section-manager.service';
 import { SimpleList } from '../libraries/collections/simpleList';
 import { Category } from './category';
 import * as _ from 'underscore';
+import { StockItemManagerService } from '../managers/stock-item-manager.service';
 
 export class Section {
     private _name: string;
     private _categoryList: Category[];
-    private sectionManager;
+    private stockItemManager;
     
     /**
      * Constructor for a section. 
@@ -24,8 +24,8 @@ export class Section {
      * 
      * @param manager: the Section Manager
      */
-    setManager(manager: SectionManagerService) {
-        this.sectionManager = manager;
+    setManager(manager: StockItemManagerService) {
+        this.stockItemManager = manager;
     }
 
     // NOTE: NOT TESTED
@@ -39,10 +39,10 @@ export class Section {
         return this._categoryList;
     }
 
-    getName(): String {
+    get name(): string {
         return this._name;
     }
-    changeName(value: string) {
+    set name(value: string) {
         this._name = value;
     }
 }

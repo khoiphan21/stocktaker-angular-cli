@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SectionManagerService } from '../shared/managers/section-manager.service';
 import { Category } from '../shared/classes/category';
 import { Section } from '../shared/classes/section';
+import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
 
 @Component({
   selector: 'app-stock-setup',
@@ -15,13 +15,13 @@ export class StockSetupComponent implements OnInit {
   private stockSetupTitle = 'STOCK SETUP';
 
   constructor(
-    private sectionManager: SectionManagerService
+    private stockItemManager: StockItemManagerService
   ) {
     this.sections = [];
   }
   
   ngOnInit() {
-    this.sectionManager.getAllSections().then(
+    this.stockItemManager.getAllSections().then(
       sections => this.sections = sections
     );
   }
