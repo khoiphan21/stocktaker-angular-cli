@@ -1,11 +1,17 @@
-<div class="wrapper" [@sideMenuState]='sideMenuState'>
-  <header>
-    <p class="title">STOCKTAKER</p>
-  </header>
-  <content>
-    <p>Side Menu Content</p>
-  </content>
-  <button class="side-menu-button">
-    STOCKTAKE
-  </button>
+<div class="background" 
+    [@sideMenuState]='sideMenuState'
+    (click)="toggleSideMenu()">
+  <div class="wrapper">
+    <header>
+      <p class="title">STOCKTAKER</p>
+    </header>
+    <content>
+      <p>Side Menu Content</p>
+    </content>
+    <div class="button-wrapper">
+      <button class="side-menu-button">
+        STOCKTAKE
+      </button>
+    </div>
+  </div>
 </div>

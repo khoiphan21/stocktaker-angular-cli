@@ -20,7 +20,7 @@ import {
         transform: 'scale(1)'
       })),
       state('inactive', style({
-        left: '-90vw',
+        left: '-100vw',
         transform: 'scale(1)'
       })),
       transition('inactive => active', animate('100ms ease-in')),
