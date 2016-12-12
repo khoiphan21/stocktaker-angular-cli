@@ -1,18 +1,21 @@
 <div class="background" 
     [@sideMenuState]='sideMenuState'>
+
   <div class="overlay" (click)="toggleSideMenu()"></div>
+
   <div class="wrapper">
     <header>
       <p class="title">STOCKTAKER</p>
     </header>
     <nav class="side-menu-navigation">
-      <a href="dashboard">DASHBOARD</a>
-      <a href="">STOCK SETUP</a>
+      <a routerLink="/dashboard" (click)="toggleSideMenu()">DASHBOARD</a>
+      <a routerLink="/stock-setup" (click)="toggleSideMenu()">STOCK SETUP</a>
     </nav>
     <div class="button-wrapper">
-      <button class="side-menu-button">
-        STOCKTAKE
-      </button>
+      <div class="side-menu-button">
+        <a routerLink="/stocktake" class="side-menu-button-text">STOCKTAKE</a>
+      </div>
     </div>
   </div>
+
 </div>

@@ -16,6 +16,9 @@ import { SectionManagerService } from './shared/managers/section-manager.service
 import { StocktakeManagerService } from './shared/managers/stocktake-manager.service';
 import { SideMenuComponent } from './side-menu/side-menu.component';
 import { SideMenuService } from './side-menu.service';
+import { StockSetupComponent } from './stock-setup/stock-setup.component';
+import { SectionHeadingComponent } from './section-heading/section-heading.component';
+import { CategoryHeadingComponent } from './category-heading/category-heading.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { SideMenuService } from './side-menu.service';
     DashboardComponent,
     TopHeaderComponent,
     BlockHeadingComponent,
-    SideMenuComponent
+    SideMenuComponent,
+    StockSetupComponent,
+    SectionHeadingComponent,
+    CategoryHeadingComponent
   ],
   imports: [
     BrowserModule,
