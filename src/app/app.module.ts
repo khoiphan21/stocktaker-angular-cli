@@ -19,6 +19,7 @@ import { SideMenuService } from './side-menu.service';
 import { StockSetupComponent } from './stock-setup/stock-setup.component';
 import { SectionHeadingComponent } from './section-heading/section-heading.component';
 import { CategoryHeadingComponent } from './category-heading/category-heading.component';
+import { SectionDisplayComponent } from './section-display/section-display.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { CategoryHeadingComponent } from './category-heading/category-heading.co
     SideMenuComponent,
     StockSetupComponent,
     SectionHeadingComponent,
-    CategoryHeadingComponent
+    CategoryHeadingComponent,
+    SectionDisplayComponent
   ],
   imports: [
     BrowserModule,

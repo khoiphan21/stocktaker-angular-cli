@@ -4,8 +4,29 @@ import { Category } from './category';
 import * as _ from 'underscore';
 
 export class Section {
-    private _name: String;
+    private _name: string;
     private _categoryList: Category[];
+    private sectionManager;
+    
+    /**
+     * Constructor for a section. 
+     * 
+     * @param name: the name of this section
+     */
+    constructor(name: string) {
+        this._categoryList = [];
+        this._name = name;
+    }
+
+    /**
+     * Give the section a handle on the observer - the Section Manager, which
+     * manages the interactions between sections and categories
+     * 
+     * @param manager: the Section Manager
+     */
+    setManager(manager: SectionManagerService) {
+        this.sectionManager = manager;
+    }
 
     // NOTE: NOT TESTED
     addCategory(category: Category) {
@@ -13,7 +34,7 @@ export class Section {
             this._categoryList.push(category);
         }
     }
-    // THIS IS VERY DANGEROUS
+    // THIS IS VERY DANGEROUS.
     getCategoryList(): Category[] {
         return this._categoryList;
     }
@@ -21,11 +42,7 @@ export class Section {
     getName(): String {
         return this._name;
     }
-    changeName(value: String) {
+    changeName(value: string) {
         this._name = value;
-    }
-
-    constructor(private manager: SectionManagerService) {
-        this._categoryList = [];
     }
 }

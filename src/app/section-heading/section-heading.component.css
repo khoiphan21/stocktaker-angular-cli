@@ -15,6 +15,7 @@
         font-weight: lighter;
         color: white;
         margin-left: 20px;
+        text-transform: uppercase;
     }
     a.expand-icon {
         height: 4vh;

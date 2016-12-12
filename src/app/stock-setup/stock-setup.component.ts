@@ -9,36 +9,20 @@ import { Section } from '../shared/classes/section';
   styleUrls: ['./stock-setup.component.css']
 })
 export class StockSetupComponent implements OnInit {
-  private categories: Category[];
-  private testCategoryName: String;
-
-  stockSetupTitle = 'STOCK SETUP';
-  warehouseTitle = "WAREHOUSE";
-  salesTitle = "SALES";
+  // The list of stock sections
+  private sections: Section[];
+  // The title shown on the header
+  private stockSetupTitle = 'STOCK SETUP';
 
   constructor(
     private sectionManager: SectionManagerService
-  ) { }
-
-  test() {
-    this.showWarehouseSection();
+  ) {
+    this.sections = [];
   }
-
-  showWarehouseSection() {
-    let allSections : Section[];
-    this.sectionManager.getAllSections().then(
-      section => {
-        allSections = section;
-        // Load the list of categories in this section
-        this.categories = allSections[0].getCategoryList();
-
-      }
-    );
-    
-    
-  }
-
+  
   ngOnInit() {
+    this.sectionManager.getAllSections().then(
+      sections => this.sections = sections
+    );
   }
-
 }

@@ -1,11 +1,4 @@
 <app-top-header [title]="stockSetupTitle"></app-top-header>
-<content>
-  <app-section-heading [title]="warehouseTitle" (click)="test()"></app-section-heading>
-  <div *ngIf="categories">
-    <app-category-heading *ngFor="let category of categories" [title]="category.getName()">
-      <!--{{category.getName()}}-->
-    </app-category-heading>
-  </div>
-    
-  <app-section-heading [title]="salesTitle"></app-section-heading>
+<content *ngIf="sections">
+  <app-section-display *ngFor="let section of sections" [section]="section"></app-section-display>
 </content>

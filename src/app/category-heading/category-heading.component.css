@@ -10,8 +10,9 @@
         margin-bottom: 1px;
     }
     h1 {
+        text-transform: uppercase;
         font-style: normal;
-        font-size: 1.3em;
+        font-size: 1.15em;
         font-weight: lighter;
         color: rgb(51, 51, 51);
         margin-left: 20px;

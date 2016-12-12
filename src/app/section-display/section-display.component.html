@@ -1,0 +1,9 @@
+<div class="container" (click)="toggleContent()">
+  <app-section-heading [title]="section.getName()"></app-section-heading>
+  <div class="section-content" *ngIf="isContentShown && categories">
+    <app-category-heading 
+      *ngFor="let category of categories" [title]="category.getName()"
+    >
+    </app-category-heading>
+  </div>
+</div>
