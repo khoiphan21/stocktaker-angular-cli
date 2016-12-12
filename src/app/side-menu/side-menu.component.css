@@ -5,6 +5,12 @@
     padding: 0;
     position: fixed;
     z-index: 99;
+}
+.overlay {
+    width: 15vw;
+    height: 100%;
+    position: absolute;
+    left: 85vw;
     background-color: rgba(0, 0, 0, 0.5);
 }
 .wrapper {
@@ -13,7 +19,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 85%;
+    width: 85vw;
     height: 100%;
     background-color: rgb(200, 200, 200);
     display: flex;
@@ -26,6 +32,14 @@
     text-align: center;
     font-family: 'Montserrat', sans-serif;
     font-size: 1.3em;
+}
+.side-menu-navigation {
+    list-style-type: none;
+    background-color: rgb(220,220,220);
+    width: 100%;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
 }
 .button-wrapper {
     height: 15vh;

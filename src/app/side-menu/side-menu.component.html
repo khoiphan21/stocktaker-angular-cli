@@ -1,15 +1,13 @@
 <div class="background" 
-    [@sideMenuState]='sideMenuState'
-    (click)="toggleSideMenu()">
+    [@sideMenuState]='sideMenuState'>
+  <div class="overlay" (click)="toggleSideMenu()"></div>
   <div class="wrapper">
     <header>
       <p class="title">STOCKTAKER</p>
     </header>
-    <nav>
-      <ul class="side-menu-navigation">
-        <li>DASHBOARD</li>
-        <li>STOCK SETUP</li>
-      </ul>
+    <nav class="side-menu-navigation">
+      <a href="dashboard">DASHBOARD</a>
+      <a href="">STOCK SETUP</a>
     </nav>
     <div class="button-wrapper">
       <button class="side-menu-button">
