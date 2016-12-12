@@ -5,10 +5,10 @@ export class Category {
     private _name: String;
     private _section: Section;
 
-    get getName(): String {
+    getName(): String {
         return this._name;
     }
-    set changeName(name: String) {
+    changeName(name: String) {
         this._name = name;
     }
     get getSection(): Section {

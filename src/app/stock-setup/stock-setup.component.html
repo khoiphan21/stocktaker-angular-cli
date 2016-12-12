@@ -1,5 +1,11 @@
 <app-top-header [title]="stockSetupTitle"></app-top-header>
 <content>
-  <app-section-heading></app-section-heading>
-  <app-section-heading></app-section-heading>
+  <app-section-heading [title]="warehouseTitle" (click)="test()"></app-section-heading>
+  <div *ngIf="categories">
+    <p *ngFor="let category of categories">
+      {{category.getName()}}
+    </p>
+  </div>
+    
+  <app-section-heading [title]="salesTitle"></app-section-heading>
 </content>
