@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-category-heading',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./category-heading.component.css']
 })
 export class CategoryHeadingComponent implements OnInit {
+  @Input()
+  title = 'Category Heading Title';
 
   constructor() { }
 

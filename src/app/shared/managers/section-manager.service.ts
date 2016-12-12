@@ -18,7 +18,8 @@ export class SectionManagerService {
         let warehouse: Section;
         warehouse = new Section(this);
         warehouse.addCategory(new Category(this, "Amenities", warehouse));
-        
+        warehouse.addCategory(new Category(this, "Ingredients", warehouse));
+
         this.sectionList.push(warehouse);
        
     }
