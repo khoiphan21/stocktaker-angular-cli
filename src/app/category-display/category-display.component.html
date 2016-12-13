@@ -1,9 +1,9 @@
 <div class="container">
   <app-category-heading 
     [title]="category.name"
-    [isArrowShown]="false">
+    (click)="toggleItemDisplay()">
   </app-category-heading>
-  <div class="category-content" *ngIf="stockItems">
+  <div class="category-content" *ngIf="stockItems && isContentShown">
     <app-stock-item *ngFor="let item of stockItems" [item]="item">
     </app-stock-item>
   </div>

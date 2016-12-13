@@ -25,4 +25,8 @@ export class CategoryDisplayComponent implements OnInit {
     this.stockItems = this.stockItemManager.getItemListForCategory(this.category.name);
   }
 
+  toggleItemDisplay() {
+    this.isContentShown = this.isContentShown ? false : true;
+  }
+
 }

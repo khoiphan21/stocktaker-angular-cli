@@ -22,6 +22,7 @@ content {
 }
 h1.title {
     text-transform: uppercase;
+    font-weight: normal;
     font-size: 3vh;
     margin-bottom: 10px;
     margin-top: 0;
@@ -43,13 +44,15 @@ p.detail {
     font-weight: lighter;
 }
 a.detail {
-    display: inline-block;
     text-transform: uppercase;
     color: rgb(50, 50, 50);
     font-size: 0.7em;
     text-decoration: underline;
     text-align: center;
-    vertical-align: middle;
+}
+p.detail > a.detail {
+    display: flex;
+    align-content: center;
 }
 span.detail-title {
     min-width: 45px;
@@ -60,5 +63,6 @@ span.detail-value {
     margin-left: 5px;
     padding: 1px;
     background-color: rgb(180, 180, 180);
+    border-radius: 5px;
     text-align: center;
 }
