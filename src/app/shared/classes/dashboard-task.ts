@@ -1,11 +1,11 @@
 import { Task } from './task';
-import { StockItem } from './stock-item';
+import { WarehouseStockItem } from './stock-item';
 
 /**
  * A task to be shown on the dashboard
  */
 export class DashboardTask extends Task {
-    private _item: StockItem;
+    private _item: WarehouseStockItem;
     private _amount: number;
 
     /**
@@ -14,7 +14,7 @@ export class DashboardTask extends Task {
      * @return: the stock item in this task, which is the actual
      *          object representing that stock item
      */
-    getItem(): StockItem {
+    getItem(): WarehouseStockItem {
         return this._item;
     }
 

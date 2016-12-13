@@ -1,1 +1,23 @@
-<p>{{stockItem.name}}</p>
+<div class="wrapper">
+  <img class="thumbnail"/>
+  <content>
+    <h1 class="title">{{item.name}}</h1>
+    <div class="item-details">
+      <p class="detail">
+        <span class="detail-title">Min:</span>
+        <span class="detail-value">{{item.minAmount}}</span>
+      </p>
+      <p class="detail">
+        <span class="detail-title">Max:</span>
+        <span class="detail-value">{{item.maxAmount}}</span>
+      </p>
+      <p class="detail">
+        <span class="detail-title">Unit:</span>
+        <span class="detail-value">{{item.unit}}</span>
+      </p>
+      <p class="detail">
+        <a class="detail">Change category</a>
+      </p>
+    </div>
+  </content>
+</div>

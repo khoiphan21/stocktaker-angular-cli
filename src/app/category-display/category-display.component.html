@@ -4,7 +4,7 @@
     [isArrowShown]="false">
   </app-category-heading>
   <div class="category-content" *ngIf="stockItems">
-    <app-stock-item *ngFor="let item of stockItems" [stockItem]="item">
+    <app-stock-item *ngFor="let item of stockItems" [item]="item">
     </app-stock-item>
   </div>
 </div>

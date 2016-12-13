@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { StockItem } from '../shared/classes/stock-item';
+import { WarehouseStockItem } from '../shared/classes/warehouse-stock-item';
 
 @Component({
   selector: 'app-category-heading',
@@ -11,7 +11,7 @@ export class CategoryHeadingComponent implements OnInit {
   @Input()
   private title = 'Category Heading Title';
   // The list of stock items in this category
-  private items: StockItem[];
+  private items: WarehouseStockItem[];
 
   // Variable to control whether the arrow should appear,
   // default to true

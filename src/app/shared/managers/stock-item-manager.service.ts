@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { Section } from '../classes/section';
 import { Category } from '../classes/category';
 import { SimpleList } from '../libraries/collections/simpleList';
-import { StockItem } from '../classes/stock-item';
+import { WarehouseStockItem } from '../classes/warehouse-stock-item';
 import * as _ from 'underscore';
 
 @Injectable()
@@ -24,22 +24,22 @@ export class StockItemManagerService {
         let ingredients = "Ingredients";
 
         this.stockMap["Amenities"] = [
-            new StockItem(
+            new WarehouseStockItem(
                 "Toilet Paper", amenities,
                 10, 5, "roll"
             ),
-            new StockItem(
+            new WarehouseStockItem(
                 "Gloves", amenities, 
                 5, 1, "box"
             )
         ];
 
         this.stockMap["Ingredients"] = [
-            new StockItem(
+            new WarehouseStockItem(
                 "Salt", ingredients,
                 3, 1, "bag"
             ),
-            new StockItem(
+            new WarehouseStockItem(
                 "Soy sauce", ingredients, 
                 3, 1, "bottle"
             )
@@ -87,10 +87,10 @@ export class StockItemManagerService {
      * 
      * @param item: the item to be added to the map
      */
-    addNewItem(item: StockItem) {
+    addNewItem(item: WarehouseStockItem) {
         let categoryName: string = item.categoryId;
         
-        let itemList: StockItem[] = this.getItemListForCategory(categoryName);
+        let itemList: WarehouseStockItem[] = this.getItemListForCategory(categoryName);
 
         // Add the actual item to the list
         if (itemList != null) {

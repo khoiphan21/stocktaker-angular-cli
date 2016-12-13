@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Category } from '../shared/classes/category';
-import { StockItem } from '../shared/classes/stock-item';
+import { WarehouseStockItem } from '../shared/classes/warehouse-stock-item';
 import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class CategoryDisplayComponent implements OnInit {
   @Input() 
   private category: Category;
   // The list of items to be displayed
-  private stockItems: StockItem[];
+  private stockItems: WarehouseStockItem[];
   // Variable to control whether the list of items is shown
   private isContentShown = false;
 

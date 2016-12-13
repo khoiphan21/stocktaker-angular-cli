@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { StockItem } from '../shared/classes/stock-item';
+import { WarehouseStockItem } from '../shared/classes/warehouse-stock-item';
 
 @Component({
   selector: 'app-stock-item',
@@ -9,7 +9,7 @@ import { StockItem } from '../shared/classes/stock-item';
 export class StockItemComponent implements OnInit {
   // The model of this item display
   @Input()
-  private stockItem: StockItem;
+  private item: WarehouseStockItem;
 
   constructor() { }
 

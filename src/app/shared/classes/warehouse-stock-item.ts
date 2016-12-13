@@ -1,7 +1,7 @@
 import { Category } from './category';
 import { StockQuantityManagerService } from '../managers/stock-quantity-manager.service';
 
-export class StockItem {
+export class WarehouseStockItem {
     private _maxAmount: number;
     private _minAmount: number;
     private _currentAmount: number;
