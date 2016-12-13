@@ -15,6 +15,35 @@ export class StockItemManagerService {
         this.stockMap = {};
         
         this.setupFakeData();
+        this.setupFakeItemData();
+    }
+
+    // Faking the item data
+    setupFakeItemData() {
+        let amenities = "Amenities";
+        let ingredients = "Ingredients";
+
+        this.stockMap["Amenities"] = [
+            new StockItem(
+                "Toilet Paper", amenities,
+                10, 5, "roll"
+            ),
+            new StockItem(
+                "Gloves", amenities, 
+                5, 1, "box"
+            )
+        ];
+
+        this.stockMap["Ingredients"] = [
+            new StockItem(
+                "Salt", ingredients,
+                3, 1, "bag"
+            ),
+            new StockItem(
+                "Soy sauce", ingredients, 
+                3, 1, "bottle"
+            )
+        ]
     }
 
     // Setup the fake data for all sections and categories
@@ -59,8 +88,7 @@ export class StockItemManagerService {
      * @param item: the item to be added to the map
      */
     addNewItem(item: StockItem) {
-        let category: Category = item.category;
-        let categoryName: string = category.name;
+        let categoryName: string = item.categoryId;
         
         let itemList: StockItem[] = this.getItemListForCategory(categoryName);
 

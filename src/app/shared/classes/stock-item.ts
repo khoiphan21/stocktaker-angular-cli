@@ -8,21 +8,36 @@ export class StockItem {
     private _unit: String;
     private _name: String;
     private _imageUrl: String;
-    private _category: Category;
+    private _categoryId: string;
+    private _quantityManager: StockQuantityManagerService;
 
     constructor(
-        private quantityManager: StockQuantityManagerService
-    ) { }
+        name: string,
+        categoryId: string,
+        maxAmount: number,
+        minAmount: number,
+        unit: string
+    ) {
+        this.name = name;
+        this.categoryId = categoryId;
+        this.maxAmount = maxAmount;
+        this.minAmount = minAmount;
+        this.unit = unit;
+    }
 
     // Tell the manager that this item is in low-stock
     notifyManager() {
-        this.quantityManager.setLowStock(this);
+        if (this.quantityManager != null) {
+            this.quantityManager.setLowStock(this);
+        }
     }
     // Change the quantity of an item, which will also
     // notify the StockQuantityManager to re-check all stocks
     changeQuantity(amount: number) {
-        this._currentAmount = amount;
-        this.quantityManager.checkStock();
+        if (this.quantityManager != null) {
+            this._currentAmount = amount;
+            this.quantityManager.checkStock();
+        }
     }
 
 
@@ -63,11 +78,17 @@ export class StockItem {
     set imageUrl(value: String) {
         this._imageUrl = value;
     }
-    get category(): Category {
-        return this._category;
+    get categoryId(): string {
+        return this._categoryId;
     }
-    set category(value: Category) {
-        this._category = value;
+    set categoryId(value: string) {
+        this._categoryId = value;
+    }
+    get quantityManager(): StockQuantityManagerService {
+        return this._quantityManager;
+    }
+    set quantityManager(value: StockQuantityManagerService) {
+        this._quantityManager = value;
     }
 
 }

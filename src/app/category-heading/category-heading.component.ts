@@ -13,9 +13,15 @@ export class CategoryHeadingComponent implements OnInit {
   // The list of stock items in this category
   private items: StockItem[];
 
+  // Variable to control whether the arrow should appear,
+  // default to true
+  @Input()
+  private isArrowShown: boolean;
+
 
   constructor() {
     this.items = [];
+    this.isArrowShown = true;
    }
 
   ngOnInit() {

@@ -19,6 +19,8 @@ import { SectionHeadingComponent } from './section-heading/section-heading.compo
 import { CategoryHeadingComponent } from './category-heading/category-heading.component';
 import { SectionDisplayComponent } from './section-display/section-display.component';
 import { StockItemManagerService } from './shared/managers/stock-item-manager.service';
+import { CategoryDisplayComponent } from './category-display/category-display.component';
+import { StockItemComponent } from './stock-item/stock-item.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { StockItemManagerService } from './shared/managers/stock-item-manager.se
     StockSetupComponent,
     SectionHeadingComponent,
     CategoryHeadingComponent,
-    SectionDisplayComponent
+    SectionDisplayComponent,
+    CategoryDisplayComponent,
+    StockItemComponent
   ],
   imports: [
     BrowserModule,
