@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-add-new-menu',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-new-menu.component.css']
 })
 export class AddNewMenuComponent implements OnInit {
+  @Output()
+  onSelected = new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  // This method is called when a menu item is selected
+  showAddNew(type: string) {
+    this.onSelected.emit(type);
   }
 
 }

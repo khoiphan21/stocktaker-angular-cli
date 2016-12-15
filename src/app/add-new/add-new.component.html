@@ -1,0 +1,13 @@
+<div class="wrapper" *ngIf="type" (click)="cancel()">
+  <section class="item" *ngIf="type === 'item'">
+    Showing Item
+  </section>
+
+  <section class="category" *ngIf="type === 'category'">
+    Showing Category
+  </section>
+
+  <section class="section" *ngIf="type === 'section'">
+    Showing Section
+  </section>
+</div>

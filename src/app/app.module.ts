@@ -22,6 +22,7 @@ import { StockItemManagerService } from './shared/managers/stock-item-manager.se
 import { CategoryDisplayComponent } from './category-display/category-display.component';
 import { StockItemComponent } from './stock-item/stock-item.component';
 import { AddNewMenuComponent } from './add-new-menu/add-new-menu.component';
+import { AddNewComponent } from './add-new/add-new.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AddNewMenuComponent } from './add-new-menu/add-new-menu.component';
     SectionDisplayComponent,
     CategoryDisplayComponent,
     StockItemComponent,
-    AddNewMenuComponent
+    AddNewMenuComponent,
+    AddNewComponent
   ],
   imports: [
     BrowserModule,

@@ -15,6 +15,8 @@ export class StockSetupComponent implements OnInit {
   private stockSetupTitle = 'STOCK SETUP';
   // Variable controlling whether the add new menu is shown
   private isAddNewMenuShown = false;
+  // Whether the Add New Window is shown
+  private addNewType: string;
 
   constructor(
     private stockItemManager: StockItemManagerService
@@ -33,5 +35,9 @@ export class StockSetupComponent implements OnInit {
   }
   closeAddNewMenu() {
     this.isAddNewMenuShown = false;
+  }
+
+  menuItemSelected(type: string) {
+     this.addNewType = type;
   }
 }

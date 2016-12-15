@@ -2,7 +2,8 @@
 <content *ngIf="sections">
   <app-section-display *ngFor="let section of sections" [section]="section"></app-section-display>
   <div class="overlay" *ngIf="isAddNewMenuShown" (click)="closeAddNewMenu()">
-    <app-add-new-menu></app-add-new-menu>
+    <app-add-new-menu (onSelected)="menuItemSelected($event)"></app-add-new-menu>
   </div>
   <img class="add-new-button" (click)="showAddNewMenu()"/>
+  <app-add-new [type]="addNewType"></app-add-new>
 </content>
