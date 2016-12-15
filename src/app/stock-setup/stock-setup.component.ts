@@ -13,6 +13,8 @@ export class StockSetupComponent implements OnInit {
   private sections: Section[];
   // The title shown on the header
   private stockSetupTitle = 'STOCK SETUP';
+  // Variable controlling whether the add new menu is shown
+  private isAddNewMenuShown = false;
 
   constructor(
     private stockItemManager: StockItemManagerService
@@ -24,5 +26,12 @@ export class StockSetupComponent implements OnInit {
     this.stockItemManager.getAllSections().then(
       sections => this.sections = sections
     );
+  }
+
+  showAddNewMenu() {
+    this.isAddNewMenuShown = true;
+  }
+  closeAddNewMenu() {
+    this.isAddNewMenuShown = false;
   }
 }
