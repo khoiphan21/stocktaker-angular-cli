@@ -3,7 +3,7 @@ import { StockItemManagerService } from '../managers/stock-item-manager.service'
 
 export class Category {
     private _name: string;
-    private _section: Section;
+    private _sectionId: string;
 
     get name(): string {
         return this._name;
@@ -11,11 +11,11 @@ export class Category {
     set name(name: string) {
         this._name = name;
     }
-    get getSection(): Section {
-        return this._section;
+    get sectionId(): string {
+        return this._sectionId;
     }
-    set changeSection(section: Section) {
-        this._section = section;
+    set sectionId(sectionId: string) {
+        this._sectionId = sectionId;
     }
 
     delete() {
@@ -23,12 +23,11 @@ export class Category {
     }
 
     constructor(
-        private manager: StockItemManagerService,
         name: string,
-        section: Section
+        sectionId: string
     ) {
         this._name = name;
-        this._section = section;
+        this._sectionId = sectionId;
     }
 
 

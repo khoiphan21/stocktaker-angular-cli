@@ -4,41 +4,44 @@
     <section class="item" *ngIf="type === 'item'">
       <h1>New Item</h1>
       <p class="input">
-        <label for="name">Name:</label><input id="name" type="text">
+        <label for="name">Name:</label><input [(ngModel)]="name" id="name" type="text">
       </p>
       <p class="input">
-        <label for="unit">Unit: </label><input type="text" id="unit">
+        <label for="unit">Unit: </label><input [(ngModel)]="unit" type="text" id="unit">
       </p>
       <p class="input">
         <span class="input-max">
-          <label for="max">Max: </label><input type="number" id="max">
+          <label for="max">Max: </label><input [(ngModel)]="max" type="number" id="max">
         </span>
         <span class="input-min">
-          <label for="min">Min: </label><input type="number" id="min">
+          <label for="min">Min: </label><input [(ngModel)]="min" type="number" id="min">
         </span>
       </p>
       <p class="input custom-input">
-        <label for="">Category:</label>
-        <span class="category-input" (click)="selectCategory()">Select Category</span>
+        <label for="category">Category:</label>
+        <select name="category" id="category" *ngIf="categories" [(ngModel)]="categoryId">
+          <option *ngFor="let category of categories" value="{{category.name}}">{{category.name}}</option>
+        </select>
       </p>
     </section>
 
     <section class="category" *ngIf="type === 'category'">
       <h1>New category</h1>
       <p class="input">
-        <label for="name">Name:</label><input id="name" type="text">
+        <label for="name">Name:</label><input [(ngModel)]="name" id="name" type="text">
       </p>
       <p class="input custom-input">
-        <label for="">Section:</label>
-        <span class="section-input" (click)="selectSection()">Select Section</span>
+        <label for="section">Section:</label>
+        <select name="section" id="section" [(ngModel)]="sectionId">
+          <option value="{{section.name}}" *ngFor="let section of sections">{{section.name}}</option>
+        </select>
       </p>
     </section>
 
     <section class="section" *ngIf="type === 'section'">
       <h1>New Section</h1>
       <p class="input">
-        <label>Name:</label>
-        <input type="text"/>
+        <label>Name:</label><input [(ngModel)]="name" type="text"/>
       </p>
     </section>
 

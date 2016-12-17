@@ -54,15 +54,15 @@ export class StockItemManagerService {
         let warehouse: Section;
         warehouse = new Section('warehouse');
         warehouse.setManager(this);
-        warehouse.addCategory(new Category(this, "Amenities", warehouse));
-        warehouse.addCategory(new Category(this, "Ingredients", warehouse));
+        warehouse.addCategory(new Category("Amenities", warehouse.name));
+        warehouse.addCategory(new Category("Ingredients", warehouse.name));
 
         let sales: Section;
         sales = new Section('sales');
         sales.setManager(this);
-        sales.addCategory(new Category(this, "Vegetarian Spring Rolls", sales));
-        sales.addCategory(new Category(this, "Pork Spring Rolls", sales));
-        sales.addCategory(new Category(this, "Beef Spring Rolls", sales));
+        sales.addCategory(new Category("Vegetarian Spring Rolls", sales.name));
+        sales.addCategory(new Category("Pork Spring Rolls", sales.name));
+        sales.addCategory(new Category("Beef Spring Rolls", sales.name));
         
 
         this.sectionList.push(warehouse);
@@ -74,11 +74,13 @@ export class StockItemManagerService {
      * 
      * @param categoryName: the name of the category whose items 
      *                      are to be retrieved
+     * @return the list of items in this category, [] if there is no item
      */
-    getItemListForCategory(categoryName: string) {
-        if (_.contains(_.allKeys(this.stockMap), categoryName)) {
-            return this.stockMap[categoryName];
+    getItemListForCategory(categoryName: string): WarehouseStockItem[] {
+        if (!_.contains(_.allKeys(this.stockMap), categoryName)) {
+            this.stockMap[categoryName] = [];
         }
+        return this.stockMap[categoryName];
     }
     
     /**
@@ -100,8 +102,48 @@ export class StockItemManagerService {
         }
     }
 
-    getAllCategories(): SimpleList<Category> {
-        return null;
+    addNewCategory(category: Category) {
+        this.getAllCategories().then(
+            categories => {
+                if (!_.contains(categories, category)) {
+                    let sectionId = category.sectionId;
+                    // THIS IS VERY BAD ALGORITHM
+                    for (let i = 0; i < this.sectionList.length; i++) {
+                        // Check if the id is the same as the new category's id
+                        if (sectionId === this.sectionList[i].name) {
+                            // Now add this category to the section 
+                            this.sectionList[i].addCategory(category);
+                        }
+                    }
+                } else {
+                    console.log('This category already exists: ' + category.name)
+                }
+            }
+        )
+    }
+
+    /**
+     * Add a new section to the list of managed sections
+     * 
+     * @param section: the section to be added
+     */
+    addNewSection(section: Section) {
+        this.sectionList.push(section);
+    }
+
+    getAllCategories(): Promise<Category[]> {
+        let categoryList: Category[] = [];
+
+        for (let i = 0; i < this.sectionList.length; i++) {
+            let section = this.sectionList[i];
+
+            // Add the list of categories under this section to the 
+            // categoryList variable
+            let categories: Category[] = section.getCategoryList();
+            categoryList = categoryList.concat(categories);
+        }
+
+        return Promise.resolve(categoryList);
     }
     getAllSections(): Promise<Section[]> {
         return Promise.resolve(this.sectionList);
