@@ -6,11 +6,6 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./add-new.component.css']
 })
 export class AddNewComponent implements OnInit {
-  // Variables to control which component to be displayed
-  private isTypeItem = false;
-  private isTypeCategory = false;
-  private isTypeSection = false;
-
   @Input()
   private type: string;
 
@@ -27,6 +22,14 @@ export class AddNewComponent implements OnInit {
   cancel() {
     this.type = null;
     this.onCancel.emit();
+  }
+
+  /**
+   * Add a new item/category/section to the stock, depending on the
+   * current type of this.type
+   */
+  addNew() {
+
   }
 
   /**
