@@ -5,5 +5,5 @@
     <app-add-new-menu (onSelected)="menuItemSelected($event)"></app-add-new-menu>
   </div>
   <img class="add-new-button" (click)="showAddNewMenu()"/>
-  <app-add-new [type]="addNewType"></app-add-new>
+  <app-add-new *ngIf="addNewType" [type]="addNewType" (onCancel)="cancelAddNew()"></app-add-new>
 </content>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-add-new',
@@ -14,6 +14,11 @@ export class AddNewComponent implements OnInit {
   @Input()
   private type: string;
 
+  // Event emitter to let the parent now that the user has cancelled
+  // add new window
+  @Output()
+  onCancel = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
@@ -21,6 +26,15 @@ export class AddNewComponent implements OnInit {
 
   cancel() {
     this.type = null;
+    this.onCancel.emit();
+  }
+
+  /**
+   * Temporarily navigate to another page to let the user select 
+   * which category the item belongs to
+   */
+  selectCategory() {
+
   }
 
 }

@@ -40,4 +40,8 @@ export class StockSetupComponent implements OnInit {
   menuItemSelected(type: string) {
      this.addNewType = type;
   }
+
+  cancelAddNew() {
+    this.addNewType = null;
+  }
 }
