@@ -2,14 +2,14 @@ import { Category } from './category';
 import { StockQuantityManagerService } from '../managers/stock-quantity-manager.service';
 
 export class WarehouseStockItem {
-    private _maxAmount: number;
-    private _minAmount: number;
-    private _currentAmount: number;
-    private _unit: String;
-    private _name: String;
-    private _imageUrl: String;
-    private _categoryId: string;
-    private _quantityManager: StockQuantityManagerService;
+    private itemMaxAmount: number;
+    private itemMinAmount: number;
+    private itemCurrentAmount: number;
+    private itemUnit: String;
+    private itemName: String;
+    private itemImageURL: String;
+    private itemCategoryId: string;
+    private itemQuantityManager: StockQuantityManagerService;
 
     constructor(
         name: string,
@@ -35,7 +35,7 @@ export class WarehouseStockItem {
     // notify the StockQuantityManager to re-check all stocks
     changeQuantity(amount: number) {
         if (this.quantityManager != null) {
-            this._currentAmount = amount;
+            this.itemCurrentAmount = amount;
             this.quantityManager.checkStock();
         }
     }
@@ -46,49 +46,49 @@ export class WarehouseStockItem {
      * Getters and setters
      */
     get maxAmount(): number {
-        return this._maxAmount;
+        return this.itemMaxAmount;
     }
     set maxAmount(value: number) {
-        this._maxAmount = value;
+        this.itemMaxAmount = value;
     }
     get minAmount(): number {
-        return this._minAmount;
+        return this.itemMinAmount;
     }
     set minAmount(value: number) {
-        this._minAmount = value;
+        this.itemMinAmount = value;
     }
     get currentAmount(): number {
-        return this._currentAmount;
+        return this.itemCurrentAmount;
     }
     get unit(): String {
-        return this._unit;
+        return this.itemUnit;
     }
     set unit(value: String) {
-        this._unit = value;
+        this.itemUnit = value;
     }
     get name(): String {
-        return this._name;
+        return this.itemName;
     }
     set name(value: String) {
-        this._name = value;
+        this.itemName = value;
     }
     get imageUrl(): String {
-        return this._imageUrl;
+        return this.itemImageURL;
     }
     set imageUrl(value: String) {
-        this._imageUrl = value;
+        this.itemImageURL = value;
     }
     get categoryId(): string {
-        return this._categoryId;
+        return this.itemCategoryId;
     }
     set categoryId(value: string) {
-        this._categoryId = value;
+        this.itemCategoryId = value;
     }
     get quantityManager(): StockQuantityManagerService {
-        return this._quantityManager;
+        return this.itemQuantityManager;
     }
     set quantityManager(value: StockQuantityManagerService) {
-        this._quantityManager = value;
+        this.itemQuantityManager = value;
     }
 
 }

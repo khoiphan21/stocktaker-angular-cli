@@ -4,18 +4,21 @@ import { Category } from '../classes/category';
 import { SimpleList } from '../libraries/collections/simpleList';
 import { WarehouseStockItem } from '../classes/warehouse-stock-item';
 import * as _ from 'underscore';
+import { StockService } from '../../stock.service';
 
 @Injectable()
 export class StockItemManagerService {
     private sectionList: Section[];
     private stockMap;
 
-    constructor() {
+    constructor(private stockService: StockService) {
         this.sectionList = [];
         this.stockMap = {};
         
         this.setupFakeData();
         this.setupFakeItemData();
+
+        this.stockService.initDB();
     }
 
     // Faking the item data

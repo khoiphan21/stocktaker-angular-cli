@@ -40,10 +40,10 @@ export class AddNewComponent implements OnInit {
       categories => {
         this.categories = categories;
       }
-    )
+    );
     this.stockItemManagerService.getAllSections().then(
       sections => this.sections = sections
-    )
+    );
   }
 
   cancel() {
@@ -56,15 +56,15 @@ export class AddNewComponent implements OnInit {
    * current type of this.type
    */
   addNew() {
-    switch(this.type) {
+    switch (this.type) {
       case 'item':
-        if (this.name != null && this.categoryId != null 
+        if (this.name != null && this.categoryId != null
             && this.max != null && this.min != null && this.unit != null) {
           let item: WarehouseStockItem = new WarehouseStockItem(
-            this.name, 
+            this.name,
             this.categoryId,
             this.max, this.min, this.unit
-          )
+          );
           // Add the actual item to the service
           this.stockItemManagerService.addNewItem(item);
         } else {
@@ -89,9 +89,9 @@ export class AddNewComponent implements OnInit {
         }
         break;
       default:
-        console.log("wrong type");
+        console.log('wrong type');
     }
-    
+  
     // Now close the popup
     this.cancel();
   }

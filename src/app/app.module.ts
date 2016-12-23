@@ -23,6 +23,7 @@ import { CategoryDisplayComponent } from './category-display/category-display.co
 import { StockItemComponent } from './stock-item/stock-item.component';
 import { AddNewMenuComponent } from './add-new-menu/add-new-menu.component';
 import { AddNewComponent } from './add-new/add-new.component';
+import { StockService } from './stock.service';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { AddNewComponent } from './add-new/add-new.component';
     StockQuantityManagerService,
     StockItemManagerService,
     StocktakeManagerService,
-    SideMenuService
+    SideMenuService,
+    StockService
   ],
   bootstrap: [AppComponent]
 })
