@@ -1,6 +1,3 @@
-import { Section } from './section';
-import { StockItemManagerService } from '../managers/stock-item-manager.service';
-
 export class Category {
     private _name: string;
     private _sectionId: string;

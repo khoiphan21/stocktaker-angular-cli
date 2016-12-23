@@ -1,7 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Section } from '../classes/section';
 import { Category } from '../classes/category';
-import { SimpleList } from '../libraries/collections/simpleList';
 import { WarehouseStockItem } from '../classes/warehouse-stock-item';
 import * as _ from 'underscore';
 import { StockService } from '../../stock.service';
@@ -14,7 +13,7 @@ export class StockItemManagerService {
     constructor(private stockService: StockService) {
         this.sectionList = [];
         this.stockMap = {};
-        
+
         this.setupFakeData();
         this.setupFakeItemData();
 
@@ -23,30 +22,30 @@ export class StockItemManagerService {
 
     // Faking the item data
     setupFakeItemData() {
-        let amenities = "Amenities";
-        let ingredients = "Ingredients";
+        let amenities = 'Amenities';
+        let ingredients = 'Ingredients';
 
-        this.stockMap["Amenities"] = [
+        this.stockMap['Amenities'] = [
             new WarehouseStockItem(
-                "Toilet Paper", amenities,
-                10, 5, "roll"
+                'Toilet Paper', amenities,
+                10, 5, 'roll'
             ),
             new WarehouseStockItem(
-                "Gloves", amenities, 
-                5, 1, "box"
+                'Gloves', amenities,
+                5, 1, 'box'
             )
         ];
 
-        this.stockMap["Ingredients"] = [
+        this.stockMap['Ingredients'] = [
             new WarehouseStockItem(
-                "Salt", ingredients,
-                3, 1, "bag"
+                'Salt', ingredients,
+                3, 1, 'bag'
             ),
             new WarehouseStockItem(
-                "Soy sauce", ingredients, 
-                3, 1, "bottle"
+                'Soy sauce', ingredients,
+                3, 1, 'bottle'
             )
-        ]
+        ];
     }
 
     // Setup the fake data for all sections and categories
@@ -57,21 +56,21 @@ export class StockItemManagerService {
         let warehouse: Section;
         warehouse = new Section('warehouse');
         warehouse.setManager(this);
-        warehouse.addCategory(new Category("Amenities", warehouse.name));
-        warehouse.addCategory(new Category("Ingredients", warehouse.name));
+        warehouse.addCategory(new Category('Amenities', warehouse.name));
+        warehouse.addCategory(new Category('Ingredients', warehouse.name));
 
         let sales: Section;
         sales = new Section('sales');
         sales.setManager(this);
-        sales.addCategory(new Category("Vegetarian Spring Rolls", sales.name));
-        sales.addCategory(new Category("Pork Spring Rolls", sales.name));
-        sales.addCategory(new Category("Beef Spring Rolls", sales.name));
-        
+        sales.addCategory(new Category('Vegetarian Spring Rolls', sales.name));
+        sales.addCategory(new Category('Pork Spring Rolls', sales.name));
+        sales.addCategory(new Category('Beef Spring Rolls', sales.name));
+
 
         this.sectionList.push(warehouse);
         this.sectionList.push(sales);
     }
-    
+
     /**
      * Get the list of items for the category of the given name
      * 
@@ -85,7 +84,7 @@ export class StockItemManagerService {
         }
         return this.stockMap[categoryName];
     }
-    
+
     /**
      * Add a new item to the map of stock items. The item will be 
      * added to the value array of the given category key
@@ -94,7 +93,7 @@ export class StockItemManagerService {
      */
     addNewItem(item: WarehouseStockItem) {
         let categoryName: string = item.categoryId;
-        
+
         let itemList: WarehouseStockItem[] = this.getItemListForCategory(categoryName);
 
         // Add the actual item to the list
@@ -119,10 +118,10 @@ export class StockItemManagerService {
                         }
                     }
                 } else {
-                    console.log('This category already exists: ' + category.name)
+                    console.log('This category already exists: ' + category.name);
                 }
             }
-        )
+        );
     }
 
     /**

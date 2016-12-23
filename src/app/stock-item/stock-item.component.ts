@@ -11,6 +11,10 @@ export class StockItemComponent implements OnInit {
   @Input()
   private item: WarehouseStockItem;
 
+  changeName(name: string) {
+    this.item.name = name;
+  }
+
   constructor() { }
 
   ngOnInit() {

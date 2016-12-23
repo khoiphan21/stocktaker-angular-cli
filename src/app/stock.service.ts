@@ -1,21 +1,18 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as PouchDB from 'pouchdb';
+// import * as _ from 'underscore';
 import { WarehouseStockItem } from './shared/classes/warehouse-stock-item';
 
 @Injectable()
 export class StockService {
   private _db;
-  private _stockItems;
+  private _stockItems: Array<WarehouseStockItem>;
 
   constructor() {
   }
 
   test() {
     console.log(this._db);
-  }
-
-  ngOnInit() {
-    this.initDB();
   }
 
   initDB() {
@@ -58,7 +55,17 @@ export class StockService {
       return Promise.resolve(this._stockItems);
     }
   }
-  onDatabaseChange() {
-  }
+  private onDatabaseChange = (change) => {
+    // let index: number = _.findIndex(this._stockItems, change.id);
+    // let item = this._stockItems[index];
+
+    // if (change.deleted) {
+    //   if (item) {
+    //     this._stockItems.splice(index, 1); // delete
+    //   } else {
+    //     if (item && item.name.toLowerCase() === change.name)
+    //   }
+    }
+
 
 }

@@ -1,4 +1,3 @@
-import { Category } from './category';
 import { StockQuantityManagerService } from '../managers/stock-quantity-manager.service';
 
 export class WarehouseStockItem {

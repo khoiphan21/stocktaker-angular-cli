@@ -10,7 +10,7 @@ import { StockItemManagerService } from '../shared/managers/stock-item-manager.s
 })
 export class CategoryDisplayComponent implements OnInit {
   // The category of this display
-  @Input() 
+  @Input()
   private category: Category;
   // The list of items to be displayed
   private stockItems: WarehouseStockItem[];

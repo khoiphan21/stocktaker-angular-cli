@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from '../shared/classes/category';
 import { Section } from '../shared/classes/section';
 import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
 
@@ -23,11 +22,15 @@ export class StockSetupComponent implements OnInit {
   ) {
     this.sections = [];
   }
-  
+
   ngOnInit() {
     this.stockItemManager.getAllSections().then(
       sections => this.sections = sections
     );
+  }
+
+  changeTitle(title: string) {
+    this.stockSetupTitle = title;
   }
 
   showAddNewMenu() {

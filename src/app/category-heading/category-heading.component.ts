@@ -18,6 +18,9 @@ export class CategoryHeadingComponent implements OnInit {
   @Input()
   private isArrowShown: boolean;
 
+  changeTitle(title: string) {
+    this.title = title;
+  }
 
   constructor() {
     this.items = [];
@@ -25,7 +28,7 @@ export class CategoryHeadingComponent implements OnInit {
    }
 
   ngOnInit() {
-    
+
   }
 
 }

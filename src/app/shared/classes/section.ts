@@ -1,4 +1,3 @@
-import { SimpleList } from '../libraries/collections/simpleList';
 import { Category } from './category';
 import * as _ from 'underscore';
 import { StockItemManagerService } from '../managers/stock-item-manager.service';
@@ -7,7 +6,7 @@ export class Section {
     private _name: string;
     private _categoryList: Category[];
     private stockItemManager;
-    
+
     /**
      * Constructor for a section. 
      * 

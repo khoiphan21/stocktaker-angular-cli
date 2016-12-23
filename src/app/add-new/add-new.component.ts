@@ -91,7 +91,7 @@ export class AddNewComponent implements OnInit {
       default:
         console.log('wrong type');
     }
-  
+
     // Now close the popup
     this.cancel();
   }
