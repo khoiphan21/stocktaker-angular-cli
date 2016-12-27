@@ -10,8 +10,7 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-remap-istanbul'),
       require('angular-cli/plugins/karma'),
-      require('karma-jasmine-html-reporter'),
-      require('pouchdb')
+      require('karma-jasmine-html-reporter')
     ],
     files: [
       { pattern: './src/test.ts', watched: false }
@@ -35,6 +34,9 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: false
+    singleRun: false,
+    mime: {
+      'text/x-typescript': ['ts','tsx']
+    }
   });
 };

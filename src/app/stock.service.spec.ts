@@ -4,18 +4,17 @@ import { TestBed, async, inject } from '@angular/core/testing';
 import { StockService } from './stock.service';
 import { WarehouseStockItem } from './shared/classes/warehouse-stock-item';
 
-describe('Service: Stock', () => {
+describe('Service: Stock (Isolated)', () => {
+  let service: StockService;
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [StockService]
-    });
+    service = new StockService();
   });
 
-  it('should create a service', inject([StockService], (service: StockService) => {
+  it('should create a service', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 
-  it('should add a new item successfully', inject([StockService], (service: StockService) => {
+  it('should add a new item successfully', () => {
     let testItem: WarehouseStockItem = new WarehouseStockItem(
       'test',
       'test category',
@@ -26,24 +25,23 @@ describe('Service: Stock', () => {
 
     // If control reaches here then all is well
     expect(service).toBeTruthy();
-  }));
+  });
 
-  it('should retrieve items successfully', inject([StockService], (service: StockService) => {
+  it('should retrieve items successfully', () => {
     let testItem: WarehouseStockItem = new WarehouseStockItem(
       'test',
       'test category',
       3, 1, 'test unit'
     );
     service.initDB();
-    service.addWarehouseItem(testItem);
     let allItems;
     service.getAll().then(items => {
       allItems = items;
       console.log(allItems);
     });
-  }));
+  });
 
-  it('should retrieve items with the correct properties', inject([StockService], (service: StockService) => {
+  it('should retrieve async items with the correct properties', done => {
     let name = 'test name';
     let categoryId = 'test category';
     let max = 3;
@@ -52,19 +50,21 @@ describe('Service: Stock', () => {
     let testItem: WarehouseStockItem = new WarehouseStockItem(
       name, categoryId, max, min, unit
     );
+    let service: StockService = new StockService();
+
     service.initDB();
     service.addWarehouseItem(testItem);
     let retrievedItem: WarehouseStockItem;
     service.getAll().then(items => {
       retrievedItem = items[0];
-
-      // Test if the fields are correct
+      expect(retrievedItem).toBeTruthy();
       expect(retrievedItem.name).toEqual(name);
       expect(retrievedItem.categoryId).toEqual(categoryId);
       expect(retrievedItem.maxAmount).toEqual(max);
       expect(retrievedItem.minAmount).toEqual(min);
       expect(retrievedItem.unit).toEqual(unit);
+      done();
     });
-  }));
+  });
 
 });

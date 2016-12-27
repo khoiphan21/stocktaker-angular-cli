@@ -3,9 +3,9 @@ import * as _ from 'underscore';
 import { StockItemManagerService } from '../managers/stock-item-manager.service';
 
 export class Section {
-    private _name: string;
-    private _categoryList: Category[];
-    private stockItemManager;
+    name: string;
+    categoryList: Category[];
+    stockItemManager;
 
     /**
      * Constructor for a section. 
@@ -13,8 +13,8 @@ export class Section {
      * @param name: the name of this section
      */
     constructor(name: string) {
-        this._categoryList = [];
-        this._name = name;
+        this.categoryList = [];
+        this.name = name;
     }
 
     /**
@@ -29,19 +29,13 @@ export class Section {
 
     // NOTE: NOT TESTED
     addCategory(category: Category) {
-        if (!_.contains(this._categoryList, category)) {
-            this._categoryList.push(category);
+        if (!_.contains(this.categoryList, category)) {
+            this.categoryList.push(category);
         }
     }
     // THIS IS VERY DANGEROUS.
     getCategoryList(): Category[] {
-        return this._categoryList;
+        return this.categoryList;
     }
 
-    get name(): string {
-        return this._name;
-    }
-    set name(value: string) {
-        this._name = value;
-    }
 }
