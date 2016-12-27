@@ -56,15 +56,16 @@ export class StockService {
         ServiceResponseStatus.ERROR, 'This item already exists in the database'
       ));
     } else {
-      this._warehouseDatabase.put(item).then(response => {
+      return this._warehouseDatabase.put(item).then(response => {
         // Now need to look what is in the response
         // console.log(response);
 
-        return Promise.resolve(new ServiceResponse(ServiceResponseStatus.OK, 
+        return Promise.resolve(new ServiceResponse(ServiceResponseStatus.OK,
           'All is well. Item ' + item.name + ' has been added successfully'));
       }).catch(error => {
         console.log(error);
-      })
+        return null;
+      });
     }
   }
   

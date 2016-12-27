@@ -3,6 +3,8 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { StockService } from './stock.service';
 import { WarehouseStockItem } from './shared/classes/warehouse-stock-item';
+import { ServiceResponse } from './shared/classes/service-response';
+import { ServiceResponseStatus } from './shared/classes/service-response-status';
 
 describe('Service: Stock (Isolated)', () => {
   let service: StockService;
@@ -14,7 +16,7 @@ describe('Service: Stock (Isolated)', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should add a new item successfully', () => {
+  it('should add a new item successfully', done => {
     let testItem: WarehouseStockItem = new WarehouseStockItem(
       'test',
       'test category',
@@ -26,13 +28,19 @@ describe('Service: Stock (Isolated)', () => {
     service.getItem('test').then(item => {
       if (item != null) {
         service.deleteWareHouseItem(item).then( () => {
-          service.addWarehouseItem(testItem);
+          service.addWarehouseItem(testItem).then( response => {
+            expect(response.status).toEqual(ServiceResponseStatus.OK);
+            done();
+          });
         });
       } else {
-        service.addWarehouseItem(testItem);
-    }}).catch( error => {
+        expect(false).toBe(true); // will definitely fail
+      }
+    }).catch( error => {
       // This means that the item is not present yet.
-      service.addWarehouseItem(testItem);
+      service.addWarehouseItem(testItem).then( response => {
+        expect(response.status).toEqual(ServiceResponseStatus.OK);
+      });
     });
 
     // If control reaches here then all is well
