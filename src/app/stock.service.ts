@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-var PouchDB = require('pouchdb');
+let PouchDB = require('pouchdb');
 // import * as _ from 'underscore';
 import { WarehouseStockItem } from './shared/classes/warehouse-stock-item';
 import { ServiceResponse } from './shared/classes/service-response';
@@ -68,7 +68,7 @@ export class StockService {
       });
     }
   }
-  
+
   /**
    * Check the given item against the list of stored items to see if 
    * the item already exists in the database

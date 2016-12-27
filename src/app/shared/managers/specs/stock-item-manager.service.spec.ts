@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { StockService } from '../../../stock.service';
 import { StockItemManagerService } from '../stock-item-manager.service';
 describe('Manager: Stock Item Manager', () => {
