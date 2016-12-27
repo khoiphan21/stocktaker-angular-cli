@@ -58,7 +58,7 @@ export class StockService {
     } else {
       this._warehouseDatabase.put(item).then(response => {
         // Now need to look what is in the response
-        console.log(response);
+        // console.log(response);
 
         return Promise.resolve(new ServiceResponse(ServiceResponseStatus.OK, 
           'All is well. Item ' + item.name + ' has been added successfully'));

@@ -24,7 +24,6 @@ describe('Service: Stock (Isolated)', () => {
 
     // Delete any 'test' item that may exist
     service.getItem('test').then(item => {
-      console.log(item);
       if (item != null) {
         service.deleteWareHouseItem(item).then( () => {
           service.addWarehouseItem(testItem);
@@ -33,9 +32,7 @@ describe('Service: Stock (Isolated)', () => {
         service.addWarehouseItem(testItem);
     }}).catch( error => {
       // This means that the item is not present yet.
-      service.addWarehouseItem(testItem).then( response => {
-        console.log(response);
-      });
+      service.addWarehouseItem(testItem);
     });
 
     // If control reaches here then all is well
