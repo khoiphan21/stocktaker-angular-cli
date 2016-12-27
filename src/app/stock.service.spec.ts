@@ -21,50 +21,44 @@ describe('Service: Stock (Isolated)', () => {
       3, 1, 'test unit'
     );
     service.initDB();
-    service.addWarehouseItem(testItem);
+
+    // Delete any 'test' item that may exist
+    service.getItem('test').then(item => {
+      console.log(item);
+      if (item != null) {
+        service.deleteWareHouseItem(item).then( () => {
+          service.addWarehouseItem(testItem);
+        });
+      } else {
+        service.addWarehouseItem(testItem);
+    }}).catch( error => {
+      // This means that the item is not present yet.
+      service.addWarehouseItem(testItem).then( response => {
+        console.log(response);
+      });
+    });
 
     // If control reaches here then all is well
-    expect(service).toBeTruthy();
-  });
+  }, 10000);
 
   it('should retrieve items successfully', () => {
-    let testItem: WarehouseStockItem = new WarehouseStockItem(
-      'test',
-      'test category',
-      3, 1, 'test unit'
-    );
     service.initDB();
     let allItems;
     service.getAll().then(items => {
       allItems = items;
-      console.log(allItems);
     });
   });
 
-  it('should retrieve async items with the correct properties', done => {
-    let name = 'test name';
-    let categoryId = 'test category';
-    let max = 3;
-    let min = 1;
-    let unit = 'test unit';
-    let testItem: WarehouseStockItem = new WarehouseStockItem(
-      name, categoryId, max, min, unit
-    );
-    let service: StockService = new StockService();
-
+  it('should retrieve the test item successfully', done => {
+    let testItem: WarehouseStockItem;
     service.initDB();
-    service.addWarehouseItem(testItem);
-    let retrievedItem: WarehouseStockItem;
-    service.getAll().then(items => {
-      retrievedItem = items[0];
-      expect(retrievedItem).toBeTruthy();
-      expect(retrievedItem.name).toEqual(name);
-      expect(retrievedItem.categoryId).toEqual(categoryId);
-      expect(retrievedItem.maxAmount).toEqual(max);
-      expect(retrievedItem.minAmount).toEqual(min);
-      expect(retrievedItem.unit).toEqual(unit);
+    service.getItem('test').then( item => {
+      testItem = item;
+      expect(testItem._id).toEqual('test');
+      expect(testItem.categoryId).toEqual('test category');
+      expect(testItem.name).toEqual('test');
       done();
     });
-  });
 
+  }, 10000);
 });

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 var PouchDB = require('pouchdb');
 // import * as _ from 'underscore';
 import { WarehouseStockItem } from './shared/classes/warehouse-stock-item';
+import { ServiceResponse } from './shared/classes/service-response';
+import { ServiceResponseStatus } from './shared/classes/service-response-status';
 
 @Injectable()
 export class StockService {
@@ -37,7 +39,7 @@ export class StockService {
     this._warehouseDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-item');
     this._stockInfoDatabase = new PouchDB('http://104.155.219.39:5984/stocktaker-stock-info');
-    this.testInitialDatabase();
+    // this.testInitialDatabase();
   }
 
   /**
@@ -47,19 +49,21 @@ export class StockService {
    *         false if another item with the same name already 
    *             exists in the database
    */
-  addWarehouseItem(item: WarehouseStockItem): Promise<boolean> {
+  addWarehouseItem(item: WarehouseStockItem): Promise<ServiceResponse> {
     // Check if the database already contains the item
     if (this.checkForDuplicateItem(item)) {
-      return Promise.resolve(false);
+      return Promise.resolve(new ServiceResponse(
+        ServiceResponseStatus.ERROR, 'This item already exists in the database'
+      ));
     } else {
       this._warehouseDatabase.put(item).then(response => {
         // Now need to look what is in the response
-        // console.log(response);
+        console.log(response);
 
-        // Currently will dodgily send a false positive
-        return Promise.resolve(true);
+        return Promise.resolve(new ServiceResponse(ServiceResponseStatus.OK, 
+          'All is well. Item ' + item.name + ' has been added successfully'));
       }).catch(error => {
-        // console.log(error);
+        console.log(error);
       })
     }
   }
@@ -80,6 +84,10 @@ export class StockService {
 
   deleteWareHouseItem(item: WarehouseStockItem) {
     return this._warehouseDatabase.remove(item);
+  }
+
+  getItem(itemId: string): Promise<WarehouseStockItem> {
+    return this._warehouseDatabase.get(itemId);
   }
 
   getAll(): Promise<WarehouseStockItem[]> {
