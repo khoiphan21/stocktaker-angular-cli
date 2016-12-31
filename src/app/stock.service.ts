@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 let PouchDB = require('pouchdb');
-// import * as _ from 'underscore';
+import * as _ from 'underscore';
 import { WarehouseStockItem } from './shared/classes/warehouse-stock-item';
 import { ServiceResponse } from './shared/classes/service-response';
 import { ServiceResponseStatus } from './shared/classes/service-response-status';
+import { Section } from './shared/classes/section';
 
 @Injectable()
 export class StockService {
   /** 
-   * The database of all warehouse items in the stock
+   * The database of all the metadata: categories and sections
    */
   private _warehouseDatabase;
   /**
@@ -38,7 +39,8 @@ export class StockService {
   initDB() {
     this._warehouseDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-item');
-    this._stockInfoDatabase = new PouchDB('http://104.155.219.39:5984/stocktaker-stock-info');
+    this._stockInfoDatabase = new PouchDB(
+      'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stock-info');
     // this.testInitialDatabase();
   }
 
@@ -69,6 +71,8 @@ export class StockService {
     }
   }
 
+  
+
   /**
    * Check the given item against the list of stored items to see if 
    * the item already exists in the database
@@ -89,6 +93,88 @@ export class StockService {
 
   getItem(itemId: string): Promise<WarehouseStockItem> {
     return this._warehouseDatabase.get(itemId);
+  }
+
+  /**
+   * Return a promise of the array of sections 
+   * 
+   * @return  a promise of an array of the sections
+   */
+  getAllSections(): Promise<Section[]> {
+    return this._stockInfoDatabase.get('sections').then(sections => {
+      return sections.sectionList;
+    });
+  }
+
+  /**
+   * Attempt to add a section to the database. 
+   * 
+   * @return  a promise containing the response of the service
+   */
+  addSection(section: Section): Promise<ServiceResponse> {
+    return this._stockInfoDatabase.get('sections').then(doc => {
+      // First check if the section is already in the list of section
+      // Checking mechanism: check by the name of the section
+      let currentList = doc.sectionList;
+      if (this.doesSectionExist(currentList, section)) {
+        console.log('section is duplicated');
+        return Promise.reject('The item already exists in the database');
+      }
+
+      // If control reaches here, the section should be safe to be added
+      let newSectionList = doc.sectionList;
+      newSectionList.push(section);
+      return this._stockInfoDatabase.put({
+        _id: 'sections',
+        _rev: doc._rev,
+        sectionList: newSectionList
+      });
+    }).then( response => {
+      return Promise.resolve(
+        new ServiceResponse(ServiceResponseStatus.OK, 'All is well.')
+      );
+    }).catch( error => {
+      return Promise.resolve(
+        new ServiceResponse(ServiceResponseStatus.ERROR, error)
+      );
+    });
+  }
+
+  /**
+   * Attempt to delete a section from the list of sections in the database
+   */
+  deleteSection(section: Section): Promise<ServiceResponse> {
+    return this._stockInfoDatabase.get('sections').then(doc => {
+      // Retrieve the current list
+      let currentList: Section[] = doc.sectionList;
+
+      // Check if the given section is within this list
+      if (!this.doesSectionExist(currentList, section)) {
+        console.log('Section cannot be duplicated: it does not exist.');
+        return Promise.reject('Section cannot be deleted: it does not exist.');
+      }
+      
+      // Get the new list of sections
+      let newList: Section[] = _.filter(currentList, (item: Section) => {
+        return item.name != section.name;
+      });
+
+      return this._stockInfoDatabase.put({
+        _id: 'sections',
+        _rev: doc._rev,
+        sectionList: newList
+      });
+
+    }).then( response => {
+      return Promise.resolve(
+        new ServiceResponse(ServiceResponseStatus.OK, 'Section is deleted successfully')
+      );
+    }).catch( error => {
+      return Promise.resolve(
+        new ServiceResponse(ServiceResponseStatus.ERROR, error)
+      );
+    })
+    
   }
 
   getAll(): Promise<WarehouseStockItem[]> {
@@ -123,7 +209,23 @@ export class StockService {
     //   } else {
     //     if (item && item.name.toLowerCase() === change.name)
     //   }
+  }
+  
+  /**
+   * Check an array of sections to see if a given section already exists in it
+   * 
+   * Checking via Section.name
+   * 
+   * @return true if the section already exists, false otherwise
+   */
+  private doesSectionExist(list: Section[], section: Section): boolean {
+    let duplicateSection: Section = _.find(list, (item: Section) => {
+      return section.name == item.name;
+    });
+    if (duplicateSection) {
+      return true;
+    } else {
+      return false;
     }
-
-
+  }
 }

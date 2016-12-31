@@ -5,11 +5,13 @@ import { StockService } from './stock.service';
 import { WarehouseStockItem } from './shared/classes/warehouse-stock-item';
 import { ServiceResponse } from './shared/classes/service-response';
 import { ServiceResponseStatus } from './shared/classes/service-response-status';
+import { Section } from './shared/classes/section';
 
 describe('Service: Stock (Isolated)', () => {
   let service: StockService;
   beforeEach(() => {
     service = new StockService();
+    service.initDB();
   });
 
   it('should create a service', () => {
@@ -22,7 +24,6 @@ describe('Service: Stock (Isolated)', () => {
       'test category',
       3, 1, 'test unit'
     );
-    service.initDB();
 
     // Delete any 'test' item that may exist
     service.getItem('test').then(item => {
@@ -47,7 +48,6 @@ describe('Service: Stock (Isolated)', () => {
   }, 10000);
 
   it('should retrieve items successfully', () => {
-    service.initDB();
     let allItems;
     service.getAll().then(items => {
       allItems = items;
@@ -56,7 +56,6 @@ describe('Service: Stock (Isolated)', () => {
 
   it('should retrieve the test item successfully', done => {
     let testItem: WarehouseStockItem;
-    service.initDB();
     service.getItem('test').then( item => {
       testItem = item;
       expect(testItem._id).toEqual('test');
@@ -66,4 +65,43 @@ describe('Service: Stock (Isolated)', () => {
     });
 
   }, 10000);
+
+  it('should be able to retrieve the array of sections', done => {
+    service.getAllSections().then(sections => {
+      console.log(sections);
+      done();
+    });
+  });
+
+  it('should not be able to add a duplicate section', done => {
+    let duplicateSection = new Section('Duplicate Section');
+    service.addSection(duplicateSection).then(response => {
+      console.log(response.message);
+      expect(response.status).toBe(ServiceResponseStatus.ERROR);
+      done();
+    })
+  });
+
+  it('should be able to add a new section', done => {
+    let testSection = new Section('Test Section');
+    service.addSection(testSection).then(response => {
+      expect(response.status).toBe(ServiceResponseStatus.OK);
+      
+      // Now send the command to delete the section to prevent duplicates
+      service.deleteSection(testSection);
+
+      done();
+    });
+  });
+
+  it('should be able to delete a section', done => {
+    let testSection = new Section('Section to be deleted');
+    service.addSection(testSection);
+    setTimeout(() => {
+      service.deleteSection(testSection).then( response => {
+        expect(response.status).toBe(ServiceResponseStatus.OK);
+        done();
+      })
+    }, 4000)
+  }, 10000)
 });
