@@ -4,12 +4,13 @@
     <form>
       <p>
         <label for="username">Username: </label>
-        <input id="username" [(ngModel)]="username" type="text" placeholder=""/>
+        <input id="username" [(ngModel)]="username" name="username" type="text" placeholder=""/>
       </p>
       <p>
         <label for="password">Password: </label>
-        <input id="password" [(ngModel)]="password" type="password" placeholder=""/>
+        <input id="password" [(ngModel)]="password" name="password" type="password" placeholder=""/>
       </p>
+      <p class="error" *ngIf="error">Wrong username or password. Please try again</p>
       <button class="button" (click)="login()">Sign In</button>
     </form>
   </content>
