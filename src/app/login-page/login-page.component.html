@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <content>
+    <h1 class="header">Stocktaker</h1>
+    <form>
+      <p>
+        <label for="username">Username: </label>
+        <input id="username" [(ngModel)]="username" type="text" placeholder=""/>
+      </p>
+      <p>
+        <label for="password">Password: </label>
+        <input id="password" [(ngModel)]="password" type="password" placeholder=""/>
+      </p>
+      <button class="button" (click)="login()">Sign In</button>
+    </form>
+  </content>
+</div>

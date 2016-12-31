@@ -1,0 +1,20 @@
+.wrapper {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(150, 150, 150);
+}
+content {
+    min-height: 70vh;
+}
+p, h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: rgb(220, 220, 220);
+}
+h1 {
+    font-size: 2em;
+    text-transform: uppercase;
+}

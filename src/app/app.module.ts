@@ -24,6 +24,7 @@ import { StockItemComponent } from './stock-item/stock-item.component';
 import { AddNewMenuComponent } from './add-new-menu/add-new-menu.component';
 import { AddNewComponent } from './add-new/add-new.component';
 import { StockService } from './stock.service';
+import { LoginPageComponent } from './login-page/login-page.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { StockService } from './stock.service';
     CategoryDisplayComponent,
     StockItemComponent,
     AddNewMenuComponent,
-    AddNewComponent
+    AddNewComponent,
+    LoginPageComponent
   ],
   imports: [
     BrowserModule,
