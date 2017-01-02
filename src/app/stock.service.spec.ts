@@ -43,8 +43,9 @@ describe('Service: Stock (Isolated)', () => {
 
   it('should retrieve items successfully', done => {
     let allItems;
-    service.getAll().then(items => {
+    service.getAllItems().then(items => {
       // if control reaches here, then all is well
+      console.log(items);
       done();
     });
   });

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-let PouchDB = require('pouchdb');
-import * as _ from 'underscore';
+
 import { WarehouseStockItem } from './shared/classes/warehouse-stock-item';
 import { ServiceResponse } from './shared/classes/service-response';
 import { ServiceResponseStatus } from './shared/classes/service-response-status';
 import { Section } from './shared/classes/section';
+
+let PouchDB = require('pouchdb');
+import * as _ from 'underscore';
 
 @Injectable()
 export class StockService {
@@ -29,7 +31,7 @@ export class StockService {
     // Print the whole database
     console.log(this._warehouseDatabase);
     // Print the items in the database
-    this.getAll().then(items => console.log(items));
+    this.getAllItems().then(items => console.log(items));
   }
 
   /**
@@ -228,12 +230,16 @@ export class StockService {
     })
   }
 
-  getAll(): Promise<WarehouseStockItem[]> {
+  /**
+   * Retrieve the array of all (currently) warehouse stock items. These 
+   * are not actual items, but "database items" that will need to be cast
+   * to real WarehouseStockItems
+   */
+  getAllItems(): Promise<WarehouseStockItem[]> {
     if (!this.warehouseItems) {
       return this._warehouseDatabase.allDocs({ include_docs: true })
           .then(docs => {
             this.warehouseItems = docs.rows.map(row => {
-              row.doc.Date = new Date(row.doc.Date);
               return row.doc;
             });
 

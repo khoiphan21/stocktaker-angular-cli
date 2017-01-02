@@ -18,7 +18,6 @@ export class StockItemManagerService implements AppSubject {
         this.stockMap = {};
         this.observers = [];
 
-        this.setupFakeData();
         this.setupFakeItemData();
 
         this.stockService.initDB();
@@ -68,35 +67,13 @@ export class StockItemManagerService implements AppSubject {
         ];
     }
 
-    // Setup the fake data for all sections and categories
-    // This will be replaced by actual server calls later
-    setupFakeData() {
-        // CREATING A SAMPLE SET OF SECTIONS
-        // IN THE FUTURE WILL BE REPLACED BY A BACKEND SERVICE    
-        let warehouse: Section;
-        warehouse = new Section('warehouse');
-        warehouse.setManager(this);
-        warehouse.addCategory(new Category('Amenities', warehouse.name));
-        warehouse.addCategory(new Category('Ingredients', warehouse.name));
-
-        let sales: Section;
-        sales = new Section('sales');
-        sales.setManager(this);
-        sales.addCategory(new Category('Vegetarian Spring Rolls', sales.name));
-        sales.addCategory(new Category('Pork Spring Rolls', sales.name));
-        sales.addCategory(new Category('Beef Spring Rolls', sales.name));
-
-
-        this.sectionList.push(warehouse);
-        this.sectionList.push(sales);
-    }
-
     /**
      * Get the list of items for the category of the given name
-     * 
-     * @param categoryName: the name of the category whose items 
+     *
+     * @param categoryName: the name (lowercase) of the category whose items
      *                      are to be retrieved
      * @return the list of items in this category, [] if there is no item
+     *         and null if the category does not exist
      */
     getItemListForCategory(categoryName: string): WarehouseStockItem[] {
         if (!_.contains(_.allKeys(this.stockMap), categoryName)) {
@@ -106,9 +83,9 @@ export class StockItemManagerService implements AppSubject {
     }
 
     /**
-     * Add a new item to the map of stock items. The item will be 
+     * Add a new item to the map of stock items. The item will be
      * added to the value array of the given category key
-     * 
+     *
      * @param item: the item to be added to the map
      */
     addNewItem(item: WarehouseStockItem) {
@@ -133,7 +110,7 @@ export class StockItemManagerService implements AppSubject {
                     for (let i = 0; i < this.sectionList.length; i++) {
                         // Check if the id is the same as the new category's id
                         if (sectionId === this.sectionList[i].name) {
-                            // Now add this category to the section 
+                            // Now add this category to the section
                             this.sectionList[i].addCategory(category);
                             this.stockService.updateSections(this.sectionList).catch( error => {
                                 console.log(error)
@@ -149,7 +126,7 @@ export class StockItemManagerService implements AppSubject {
 
     /**
      * Add a new section to the list of managed sections
-     * 
+     *
      * @param section: the section to be added
      */
     addNewSection(section: Section) {
@@ -167,7 +144,7 @@ export class StockItemManagerService implements AppSubject {
         for (let i = 0; i < this.sectionList.length; i++) {
             let section = this.sectionList[i];
 
-            // Add the list of categories under this section to the 
+            // Add the list of categories under this section to the
             // categoryList variable
             let categories: Category[] = section.getCategoryList();
             categoryList = categoryList.concat(categories);
@@ -179,7 +156,7 @@ export class StockItemManagerService implements AppSubject {
     /**
      * Retrieve all the sections of this stock, which are actual Section
      * objects with methods defined in the Section class
-     * 
+     *
      * @return    a Promise of the array of sections for this stock.
      *            the order of sections in the array will be random
      */
@@ -224,5 +201,17 @@ export class StockItemManagerService implements AppSubject {
                 jsonCategory.name, jsonCategory.sectionId
             ));
         })
+    }
+
+    /**
+     * Retrieve all the (currently) warehouse items from the database
+     * and set up the stockMap field.
+     *
+     * @return  a promise of the actual map of categories to stock items
+     */
+    private loadItemsFromDatabase(): Promise<any> {
+        let stockMap = {};
+
+        return Promise.resolve(stockMap);
     }
 }
