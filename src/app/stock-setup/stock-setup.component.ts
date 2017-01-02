@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Section } from '../shared/classes/section';
 import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
+import { AppObserver } from '../shared/classes/app-observer';
 
 @Component({
   selector: 'app-stock-setup',
   templateUrl: './stock-setup.component.html',
   styleUrls: ['./stock-setup.component.css']
 })
-export class StockSetupComponent implements OnInit {
+export class StockSetupComponent implements OnInit, AppObserver {
   // The list of stock sections
   private sections: Section[];
   // The title shown on the header
@@ -24,6 +25,9 @@ export class StockSetupComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Add itself to the list of observers in the stock item manager
+    this.stockItemManager.addObserver(this);
+
     this.stockItemManager.getAllSections().then(
       sections => this.sections = sections
     );
@@ -46,5 +50,16 @@ export class StockSetupComponent implements OnInit {
 
   cancelAddNew() {
     this.addNewType = null;
+  }
+
+  /**
+   * Call this method to notify this component that there has been a change
+   * in the database. 
+   */
+  update() {
+    // Reload the list of sections
+    this.stockItemManager.getAllSections().then(
+      sections => this.sections = sections
+    );
   }
 }

@@ -1,19 +1,6 @@
 export class Category {
-    private _name: string;
-    private _sectionId: string;
-
-    get name(): string {
-        return this._name;
-    }
-    set name(name: string) {
-        this._name = name;
-    }
-    get sectionId(): string {
-        return this._sectionId;
-    }
-    set sectionId(sectionId: string) {
-        this._sectionId = sectionId;
-    }
+    name: string;
+    sectionId: string;
 
     delete() {
 
@@ -23,8 +10,8 @@ export class Category {
         name: string,
         sectionId: string
     ) {
-        this._name = name;
-        this._sectionId = sectionId;
+        this.name = name;
+        this.sectionId = sectionId;
     }
 
 

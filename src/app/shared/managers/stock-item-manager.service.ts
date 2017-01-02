@@ -4,20 +4,40 @@ import { Category } from '../classes/category';
 import { WarehouseStockItem } from '../classes/warehouse-stock-item';
 import * as _ from 'underscore';
 import { StockService } from '../../stock.service';
+import { AppObserver } from '../classes/app-observer';
+import { AppSubject } from '../classes/app-subject';
 
 @Injectable()
-export class StockItemManagerService {
+export class StockItemManagerService implements AppSubject {
     private sectionList: Section[];
     private stockMap;
+    private observers: AppObserver[];
 
     constructor(private stockService: StockService) {
         this.sectionList = [];
         this.stockMap = {};
+        this.observers = [];
 
         this.setupFakeData();
         this.setupFakeItemData();
 
         this.stockService.initDB();
+    }
+
+    /**
+     * Add an observer that will need to react upon changes in the database
+     */
+    addObserver(observer: AppObserver) {
+        this.observers.push(observer);
+    }
+
+    /**
+     * Notify all observers
+     */
+    notifyAll() {
+        _.each(this.observers, (observer: AppObserver) => {
+            observer.update();
+        })
     }
 
     // Faking the item data
@@ -115,6 +135,9 @@ export class StockItemManagerService {
                         if (sectionId === this.sectionList[i].name) {
                             // Now add this category to the section 
                             this.sectionList[i].addCategory(category);
+                            this.stockService.updateSections(this.sectionList).catch( error => {
+                                console.log(error)
+                            });
                         }
                     }
                 } else {
@@ -130,7 +153,12 @@ export class StockItemManagerService {
      * @param section: the section to be added
      */
     addNewSection(section: Section) {
-        this.sectionList.push(section);
+        this.stockService.addSection(section).then( response => {
+            console.log(response);
+            this.notifyAll();
+        }).catch( error => {
+            console.log(error);
+        });
     }
 
     getAllCategories(): Promise<Category[]> {
@@ -147,9 +175,35 @@ export class StockItemManagerService {
 
         return Promise.resolve(categoryList);
     }
+
+    /**
+     * Retrieve all the sections of this stock, which are actual Section
+     * objects with methods defined in the Section class
+     * 
+     * @return    a Promise of the array of sections for this stock.
+     *            the order of sections in the array will be random
+     */
     getAllSections(): Promise<Section[]> {
-        return Promise.resolve(this.sectionList);
+        return this.stockService.getAllSections().then( (databaseSections: Section[]) => {
+            let finalSectionList: Section[] = [];
+
+            _.each(databaseSections, (section: Section) => {
+                // Now setup the actual section objects with methods
+                let actualSection = new Section(section.name);
+                this.setupCategoryList(actualSection, section.categoryList);
+                actualSection.setManager(this);
+
+                finalSectionList.push(actualSection);
+
+            })
+
+            // now update the internal array of sections
+            this.sectionList = finalSectionList;
+
+            return finalSectionList;
+        });
     }
+
     notifyChange(category: Category, section: Section) {
 
     }
@@ -158,5 +212,17 @@ export class StockItemManagerService {
     }
     public notifyDeleteSection (section: Section) {
 
+    }
+
+    /**
+     * Set up a section's list of categories, by convertin each JSON category
+     * into an actual Category object
+     */
+    private setupCategoryList(section: Section, categoryList: Category[]) {
+        _.each(categoryList, jsonCategory => {
+            section.categoryList.push(new Category(
+                jsonCategory.name, jsonCategory.sectionId
+            ));
+        })
     }
 }

@@ -87,8 +87,13 @@ export class StockService {
     return this._warehouseDatabase.put(item);
   }
 
-  deleteWareHouseItem(item: WarehouseStockItem) {
-    return this._warehouseDatabase.remove(item);
+  deleteWareHouseItem(item: WarehouseStockItem): Promise<ServiceResponse> {
+    return this._warehouseDatabase.get(item.name).then( doc =>{
+      this._warehouseDatabase.remove(doc._id, doc._rev);
+      return new ServiceResponse(ServiceResponseStatus.OK, 'item deleted successfully');
+    }).catch( error => {
+      return new ServiceResponse(ServiceResponseStatus.ERROR, error);
+    });
   }
 
   getItem(itemId: string): Promise<WarehouseStockItem> {
@@ -96,13 +101,47 @@ export class StockService {
   }
 
   /**
-   * Return a promise of the array of sections 
+   * Return a promise of the array of sections, which are "Section-like"
+   * objects (objects with only properties). These objects will need to be
+   * cast to actual Section objects
    * 
    * @return  a promise of an array of the sections
    */
   getAllSections(): Promise<Section[]> {
     return this._stockInfoDatabase.get('sections').then(sections => {
       return sections.sectionList;
+    });
+  }
+
+  /**
+   * Sync the list of sections with the given array of sections
+   */
+  updateSections(newSectionList: Section[]): Promise<ServiceResponse> {
+    // The current issue is with circular reference, so will construct  
+    // a new section list to be updated
+    let jsonSectionList = [];
+    _.each(newSectionList, section => {
+      jsonSectionList.push({
+        name: section.name,
+        categoryList: section.categoryList
+      })
+    })
+    console.log(jsonSectionList);
+
+    return this._stockInfoDatabase.get('sections').then(doc => {
+      return this._stockInfoDatabase.put({
+        _id: 'sections',
+        _rev: doc._rev,
+        sectionList: jsonSectionList
+      })
+    }).then( response => {
+      return Promise.resolve(
+        new ServiceResponse(ServiceResponseStatus.OK, 'All is well.')
+      );
+    }).catch( error => {
+      return Promise.reject(
+        new ServiceResponse(ServiceResponseStatus.ERROR, error)
+      );
     });
   }
 
@@ -142,6 +181,8 @@ export class StockService {
 
   /**
    * Attempt to delete a section from the list of sections in the database
+   * 
+   * @return  a promise containing the response of the service
    */
   deleteSection(section: Section): Promise<ServiceResponse> {
     return this._stockInfoDatabase.get('sections').then(doc => {
@@ -150,7 +191,6 @@ export class StockService {
 
       // Check if the given section is within this list
       if (!this.doesSectionExist(currentList, section)) {
-        console.log('Section cannot be duplicated: it does not exist.');
         return Promise.reject('Section cannot be deleted: it does not exist.');
       }
       
@@ -163,6 +203,8 @@ export class StockService {
         _id: 'sections',
         _rev: doc._rev,
         sectionList: newList
+      }).catch (error => {
+        console.log(error);
       });
 
     }).then( response => {
@@ -170,11 +212,10 @@ export class StockService {
         new ServiceResponse(ServiceResponseStatus.OK, 'Section is deleted successfully')
       );
     }).catch( error => {
-      return Promise.resolve(
+      return Promise.reject(
         new ServiceResponse(ServiceResponseStatus.ERROR, error)
       );
     })
-    
   }
 
   getAll(): Promise<WarehouseStockItem[]> {

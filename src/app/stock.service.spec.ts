@@ -18,33 +18,27 @@ describe('Service: Stock (Isolated)', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should add a new item successfully', done => {
+  /************************
+   * TESTS RELATED TO ITEMS
+   ************************/ 
+  it('should add a new item successfully, then delete it', done => {
     let testItem: WarehouseStockItem = new WarehouseStockItem(
       'test',
       'test category',
       3, 1, 'test unit'
     );
 
-    // Delete any 'test' item that may exist
-    service.getItem('test').then(item => {
-      if (item != null) {
-        service.deleteWareHouseItem(item).then( () => {
-          service.addWarehouseItem(testItem).then( response => {
-            expect(response.status).toEqual(ServiceResponseStatus.OK);
-            done();
-          });
-        });
-      } else {
-        expect(false).toBe(true); // will definitely fail
-      }
-    }).catch( error => {
-      // This means that the item is not present yet.
-      service.addWarehouseItem(testItem).then( response => {
-        expect(response.status).toEqual(ServiceResponseStatus.OK);
-      });
-    });
+    service.addWarehouseItem(testItem).then( response => {
+      expect(response.status).toEqual(ServiceResponseStatus.OK);
+      done();
 
-    // If control reaches here then all is well
+      // Now delete the test item to prevent confusion
+      service.deleteWareHouseItem(testItem);
+    }).catch( error => {
+      console.log(error);
+      expect(false).toBe(true); // Test will definitely fail
+      done();
+    });
   }, 10000);
 
   it('should retrieve items successfully', () => {
@@ -54,18 +48,9 @@ describe('Service: Stock (Isolated)', () => {
     });
   });
 
-  it('should retrieve the test item successfully', done => {
-    let testItem: WarehouseStockItem;
-    service.getItem('test').then( item => {
-      testItem = item;
-      expect(testItem._id).toEqual('test');
-      expect(testItem.categoryId).toEqual('test category');
-      expect(testItem.name).toEqual('test');
-      done();
-    });
-
-  }, 10000);
-
+  /***************************
+   * TESTS RELATED TO SECTIONS
+   ***************************/ 
   it('should be able to retrieve the array of sections', done => {
     service.getAllSections().then(sections => {
       console.log(sections);
@@ -75,12 +60,17 @@ describe('Service: Stock (Isolated)', () => {
 
   it('should not be able to add a duplicate section', done => {
     let duplicateSection = new Section('Duplicate Section');
-    service.addSection(duplicateSection).then(response => {
-      console.log(response.message);
-      expect(response.status).toBe(ServiceResponseStatus.ERROR);
-      done();
-    })
-  });
+    service.addSection(duplicateSection);
+    
+    setTimeout(() => {
+      service.addSection(duplicateSection).then(response => {
+        expect(response.status).toBe(ServiceResponseStatus.ERROR);
+        done();
+        service.deleteSection(duplicateSection);
+      })
+    }, 4000)
+    
+  }, 10000);
 
   it('should be able to add a new section', done => {
     let testSection = new Section('Test Section');
@@ -96,12 +86,16 @@ describe('Service: Stock (Isolated)', () => {
 
   it('should be able to delete a section', done => {
     let testSection = new Section('Section to be deleted');
-    service.addSection(testSection);
-    setTimeout(() => {
-      service.deleteSection(testSection).then( response => {
-        expect(response.status).toBe(ServiceResponseStatus.OK);
-        done();
-      })
-    }, 4000)
+    service.addSection(testSection).then( response => {
+      return Promise.all([response, service.deleteSection(testSection)])
+    }).then ( responses => {
+      expect(responses[0].status).toBe(ServiceResponseStatus.OK);
+      expect(responses[1].status).toBe(ServiceResponseStatus.OK);
+      done();
+    }).catch( error => {
+      console.log(error);
+      expect(false).toBe(true); // will definitely fail
+      done();
+    });
   }, 10000)
 });

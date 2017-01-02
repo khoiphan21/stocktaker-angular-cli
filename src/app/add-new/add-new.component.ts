@@ -74,8 +74,8 @@ export class AddNewComponent implements OnInit {
       case 'category':
         if (this.name != null && this.sectionId != null) {
           let category: Category = new Category(
-              this.name, this.sectionId
-            );
+            this.name.toLowerCase(), this.sectionId
+          );
           this.stockItemManagerService.addNewCategory(category);
         } else {
           console.log('Wrong section id: ' + this.sectionId);
@@ -84,7 +84,7 @@ export class AddNewComponent implements OnInit {
 
       case 'section':
         if (this.name != null) {
-          let section: Section = new Section(this.name);
+          let section: Section = new Section(this.name.toLowerCase());
           this.stockItemManagerService.addNewSection(section);
         }
         break;
