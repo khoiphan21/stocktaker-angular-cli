@@ -38,10 +38,20 @@ export class StockService {
    */
   initDB() {
     this._warehouseDatabase = new PouchDB(
-      'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-item');
+      'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-items');
     this._stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stock-info');
     // this.testInitialDatabase();
+  }
+
+  /**
+   * Initialise the databases for testing
+   */
+  initTestDB() {
+    this._warehouseDatabase = new PouchDB(
+      'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-items');
+    this._stockInfoDatabase = new PouchDB(
+      'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-stock-info');
   }
 
   /**

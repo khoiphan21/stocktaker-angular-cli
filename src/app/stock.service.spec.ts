@@ -11,7 +11,7 @@ describe('Service: Stock (Isolated)', () => {
   let service: StockService;
   beforeEach(() => {
     service = new StockService();
-    service.initDB();
+    service.initTestDB();
   });
 
   it('should create a service', () => {
@@ -41,10 +41,11 @@ describe('Service: Stock (Isolated)', () => {
     });
   }, 10000);
 
-  it('should retrieve items successfully', () => {
+  it('should retrieve items successfully', done => {
     let allItems;
     service.getAll().then(items => {
-      allItems = items;
+      // if control reaches here, then all is well
+      done();
     });
   });
 
