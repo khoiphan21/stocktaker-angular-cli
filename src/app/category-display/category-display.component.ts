@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Category } from '../shared/classes/category';
 import { WarehouseStockItem } from '../shared/classes/warehouse-stock-item';
 import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
@@ -8,25 +8,26 @@ import { StockItemManagerService } from '../shared/managers/stock-item-manager.s
   templateUrl: './category-display.component.html',
   styleUrls: ['./category-display.component.css']
 })
-export class CategoryDisplayComponent implements OnInit {
+export class CategoryDisplayComponent implements OnInit, OnChanges {
   // The category of this display
   @Input()
-  private category: Category;
-  // The list of items to be displayed
-  private stockItems: WarehouseStockItem[];
-  // Variable to control whether the list of items is shown
-  private isContentShown = false;
+  private categoryList: Category[];
+  // Variable to determine whether the categories are shown
+  @Input()
+  private isShown: boolean;
 
   constructor(
     private stockItemManager: StockItemManagerService
   ) { }
 
   ngOnInit() {
-    this.stockItems = this.stockItemManager.getItemListForCategory(this.category.name);
   }
 
-  toggleItemDisplay() {
-    this.isContentShown = this.isContentShown ? false : true;
+  ngOnChanges() {
+  }
+
+  toggleItemDisplay(category: Category) {
+    category.isContentShown = category.isContentShown ? false : true;
   }
 
 }

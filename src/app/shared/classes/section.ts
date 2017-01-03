@@ -6,6 +6,9 @@ export class Section {
     name: string;
     categoryList: Category[];
     stockItemManager;
+    
+    // Variable to control whether the content of this section is shown
+    isContentShown: boolean = false;
 
     /**
      * Constructor for a section. 
@@ -33,9 +36,4 @@ export class Section {
             this.categoryList.push(category);
         }
     }
-    // THIS IS VERY DANGEROUS.
-    getCategoryList(): Category[] {
-        return this.categoryList;
-    }
-
 }

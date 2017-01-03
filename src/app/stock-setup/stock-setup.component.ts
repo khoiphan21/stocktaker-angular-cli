@@ -57,9 +57,12 @@ export class StockSetupComponent implements OnInit, AppObserver {
    * in the database. 
    */
   update() {
+    console.log('getting updated');
     // Reload the list of sections
     this.stockItemManager.getAllSections().then(
-      sections => this.sections = sections
+      sections => {
+        this.sections = sections;
+      }
     );
   }
 }

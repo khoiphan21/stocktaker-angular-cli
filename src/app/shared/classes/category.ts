@@ -1,6 +1,7 @@
 export class Category {
     name: string;
     sectionId: string;
+    isContentShown: boolean = false;
 
     delete() {
 

@@ -30,10 +30,11 @@ describe('Service: Stock (Isolated)', () => {
 
     service.addWarehouseItem(testItem).then( response => {
       expect(response.status).toEqual(ServiceResponseStatus.OK);
-      done();
 
       // Now delete the test item to prevent confusion
       service.deleteWareHouseItem(testItem);
+
+      done();
     }).catch( error => {
       console.log(error);
       expect(false).toBe(true); // Test will definitely fail

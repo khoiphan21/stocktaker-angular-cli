@@ -66,7 +66,7 @@ export class StockService {
   addWarehouseItem(item: WarehouseStockItem): Promise<ServiceResponse> {
     // Check if the database already contains the item
     if (this.checkForDuplicateItem(item)) {
-      return Promise.resolve(new ServiceResponse(
+      return Promise.reject(new ServiceResponse(
         ServiceResponseStatus.ERROR, 'This item already exists in the database'
       ));
     } else {
@@ -78,7 +78,9 @@ export class StockService {
           'All is well. Item ' + item.name + ' has been added successfully'));
       }).catch(error => {
         console.log(error);
-        return null;
+        return Promise.reject(new ServiceResponse(
+          ServiceResponseStatus.ERROR, error
+        ));
       });
     }
   }
@@ -138,7 +140,6 @@ export class StockService {
         categoryList: section.categoryList
       })
     })
-    console.log(jsonSectionList);
 
     return this._stockInfoDatabase.get('sections').then(doc => {
       return this._stockInfoDatabase.put({

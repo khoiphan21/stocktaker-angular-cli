@@ -1,6 +1,6 @@
 <app-top-header [title]="stockSetupTitle"></app-top-header>
 <content *ngIf="sections">
-  <app-section-display *ngFor="let section of sections" [section]="section"></app-section-display>
+  <app-section-display [sections]="sections"></app-section-display>
   <div class="overlay" *ngIf="isAddNewMenuShown" (click)="closeAddNewMenu()">
     <app-add-new-menu (onSelected)="menuItemSelected($event)"></app-add-new-menu>
   </div>

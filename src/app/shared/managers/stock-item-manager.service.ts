@@ -6,6 +6,8 @@ import * as _ from 'underscore';
 import { StockService } from '../../stock.service';
 import { AppObserver } from '../classes/app-observer';
 import { AppSubject } from '../classes/app-subject';
+import { ServiceResponse } from '../classes/service-response';
+import { ServiceResponseStatus } from '../classes/service-response-status';
 
 @Injectable()
 export class StockItemManagerService implements AppSubject {
@@ -18,9 +20,13 @@ export class StockItemManagerService implements AppSubject {
         this.stockMap = {};
         this.observers = [];
 
-        this.setupFakeItemData();
-
         this.stockService.initDB();
+
+        // Load the list of items into the stockMap
+        // NOTE: THIS SHOULD NOT BE IN THE CONSTRUCTOR. WILL BE HERE FOR NOW 
+        this.loadItemsFromDatabase().then( stockMap => {
+            this.stockMap = stockMap;
+        })
     }
 
     /**
@@ -35,36 +41,9 @@ export class StockItemManagerService implements AppSubject {
      */
     notifyAll() {
         _.each(this.observers, (observer: AppObserver) => {
+            console.log('notifying: ' + observer);
             observer.update();
         })
-    }
-
-    // Faking the item data
-    setupFakeItemData() {
-        let amenities = 'Amenities';
-        let ingredients = 'Ingredients';
-
-        this.stockMap['Amenities'] = [
-            new WarehouseStockItem(
-                'Toilet Paper', amenities,
-                10, 5, 'roll'
-            ),
-            new WarehouseStockItem(
-                'Gloves', amenities,
-                5, 1, 'box'
-            )
-        ];
-
-        this.stockMap['Ingredients'] = [
-            new WarehouseStockItem(
-                'Salt', ingredients,
-                3, 1, 'bag'
-            ),
-            new WarehouseStockItem(
-                'Soy sauce', ingredients,
-                3, 1, 'bottle'
-            )
-        ];
     }
 
     /**
@@ -88,16 +67,20 @@ export class StockItemManagerService implements AppSubject {
      *
      * @param item: the item to be added to the map
      */
-    addNewItem(item: WarehouseStockItem) {
-        let categoryName: string = item.categoryId;
-
-        let itemList: WarehouseStockItem[] = this.getItemListForCategory(categoryName);
-
-        // Add the actual item to the list
-        if (itemList != null) {
-            itemList.push(item);
+    addNewItem(item: WarehouseStockItem): Promise<ServiceResponse> {
+        if (!_.contains(_.allKeys(this.stockMap), item.categoryId)) {
+            return Promise.reject('The category does not exist in the database');
         } else {
-            console.log('Wrong category name: ' + categoryName);
+            this.stockService.addWarehouseItem(item).then( () => {
+                this.addItemToStockMap(item, this.stockMap);
+                this.notifyAll();
+                return Promise.resolve(new ServiceResponse(
+                    ServiceResponseStatus.OK, 'Item: ' + item.name + ' is added successfully'
+                ));
+            }).catch( (error: ServiceResponse) => {
+                console.log(error);
+                return Promise.reject(error);
+            });
         }
     }
 
@@ -112,9 +95,12 @@ export class StockItemManagerService implements AppSubject {
                         if (sectionId === this.sectionList[i].name) {
                             // Now add this category to the section
                             this.sectionList[i].addCategory(category);
-                            this.stockService.updateSections(this.sectionList).catch( error => {
+                            this.stockService.updateSections(this.sectionList).then( () => {
+                                this.notifyAll();
+                            }).catch( error => {
                                 console.log(error)
                             });
+                            
                         }
                     }
                 } else {
@@ -146,7 +132,7 @@ export class StockItemManagerService implements AppSubject {
 
             // Add the list of categories under this section to the
             // categoryList variable
-            let categories: Category[] = section.getCategoryList();
+            let categories: Category[] = section.categoryList;
             categoryList = categoryList.concat(categories);
         }
 
@@ -181,9 +167,6 @@ export class StockItemManagerService implements AppSubject {
         });
     }
 
-    notifyChange(category: Category, section: Section) {
-
-    }
     public notifyDeleteCategory (category: Category) {
 
     }
@@ -209,9 +192,36 @@ export class StockItemManagerService implements AppSubject {
      *
      * @return  a promise of the actual map of categories to stock items
      */
-    private loadItemsFromDatabase(): Promise<any> {
+    loadItemsFromDatabase(): Promise<any> {
         let stockMap = {};
 
+        this.stockService.getAllItems().then( items => {
+            _.each(items, databaseItem => {
+                let actualItem = new WarehouseStockItem(
+                    databaseItem.name,
+                    databaseItem.categoryId,
+                    databaseItem.maxAmount,
+                    databaseItem.minAmount,
+                    databaseItem.unit
+                );
+
+                this.addItemToStockMap(actualItem, stockMap);
+            })
+        })
+
         return Promise.resolve(stockMap);
+    }
+    
+    /**
+     * Add an item to the a stockMap variable. This will check to make sure 
+     * the item is added to the correct category in the stockmap.
+     */
+    addItemToStockMap(item: WarehouseStockItem, stockMap: any) {
+        if (stockMap[item.categoryId] == null) {
+            // The category does not exist in the map yet. initialize one now
+            stockMap[item.categoryId] = [];
+        }
+        // Now add the item to the category
+        stockMap[item.categoryId].push(item);
     }
 }
