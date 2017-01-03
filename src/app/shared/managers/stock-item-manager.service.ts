@@ -73,7 +73,6 @@ export class StockItemManagerService implements AppSubject {
         } else {
             this.stockService.addWarehouseItem(item).then( () => {
                 this.addItemToStockMap(item, this.stockMap);
-                this.notifyAll();
                 return Promise.resolve(new ServiceResponse(
                     ServiceResponseStatus.OK, 'Item: ' + item.name + ' is added successfully'
                 ));
