@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { StockService } from '../stock.service';
 
 @Component({
   selector: 'app-login-page',
@@ -15,13 +16,19 @@ export class LoginPageComponent implements OnInit {
   login() {
     if (this.username === "kerko" && this.password === "kerkofood") {
       this.router.navigate(['/dashboard']);
+      this.stockService.initKerkoDB();
+    } else if (this.username === 'khoi' && this.password === 'khoiphan') {
+      this.router.navigate(['/dashboard']);
+      this.stockService.initDB;
     } else {
       this.error = true;
     }
   }
 
-  constructor(private router: Router) {
-   }
+  constructor(
+    private router: Router,
+    private stockService: StockService
+  ) { }
 
   ngOnInit() {
   }

@@ -57,6 +57,16 @@ export class StockService {
   }
 
   /**
+   * Initialise Kerko's database
+   */
+  initKerkoDB() {
+    this._warehouseDatabase = new PouchDB(
+      'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-items');
+    this._stockInfoDatabase = new PouchDB(
+      'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-stock-info');
+  }
+
+  /**
    * Add a warehouse item to the database. 
    * 
    * @return true if the operation is successful
