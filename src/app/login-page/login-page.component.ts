@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StockService } from '../stock.service';
+import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
 
 @Component({
   selector: 'app-login-page',
@@ -13,22 +14,24 @@ export class LoginPageComponent implements OnInit {
   private password: string;
   private error: boolean;
 
-  login() {
-    if (this.username === "kerko" && this.password === "kerkofood") {
-      this.router.navigate(['/dashboard']);
-      this.stockService.initKerkoDB();
-    } else if (this.username === 'khoi' && this.password === 'khoiphan') {
-      this.router.navigate(['/dashboard']);
-      this.stockService.initDB;
-    } else {
-      this.error = true;
-    }
-  }
-
   constructor(
     private router: Router,
-    private stockService: StockService
+    private stockService: StockService,
+    private itemManager: StockItemManagerService
   ) { }
+
+  login() {
+    if (this.username === "kerko" && this.password === "kerkofood") {
+      localStorage.setItem('user', 'kerko');
+    } else if (this.username === 'khoi' && this.password === 'khoiphan') {
+      localStorage.setItem('user', 'khoi');
+    } else {
+      this.error = true;
+      return;
+    }
+
+    this.router.navigate(['/dashboard']);
+  }
 
   ngOnInit() {
   }

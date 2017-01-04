@@ -15,18 +15,33 @@ export class StockItemManagerService implements AppSubject {
     private stockMap;
     private observers: AppObserver[];
 
+    // Variable to make sure the database is loaded before any calls is made
+    private isDatabaseLoaded: boolean = false;
+
     constructor(private stockService: StockService) {
         this.sectionList = [];
         this.stockMap = {};
         this.observers = [];
 
-        this.stockService.initDB();
+        if (localStorage != null) {
+            let user: string = localStorage.getItem('user');
+            switch(user) {
+                case 'kerko':
+                    this.stockService.initKerkoDB();
+                    break;
+                case 'khoi':
+                    this.stockService.initDB();
+                    break;
+            }
+        } else {
+            this.stockService.initTestDB();
+        }
 
-        // Load the list of items into the stockMap
-        // NOTE: THIS SHOULD NOT BE IN THE CONSTRUCTOR. WILL BE HERE FOR NOW 
-        this.loadItemsFromDatabase().then( stockMap => {
-            this.stockMap = stockMap;
-        })
+        
+
+        console.log(this.stockService);
+
+        // stockService.initKerkoDB();
     }
 
     /**
@@ -146,6 +161,7 @@ export class StockItemManagerService implements AppSubject {
      *            the order of sections in the array will be random
      */
     getAllSections(): Promise<Section[]> {
+        console.log(this.stockService);
         return this.stockService.getAllSections().then( (databaseSections: Section[]) => {
             let finalSectionList: Section[] = [];
 
@@ -191,8 +207,8 @@ export class StockItemManagerService implements AppSubject {
      *
      * @return  a promise of the actual map of categories to stock items
      */
-    loadItemsFromDatabase(): Promise<any> {
-        let stockMap = {};
+    loadItemsFromDatabase() {
+        this.stockMap = {};
 
         this.stockService.getAllItems().then( items => {
             _.each(items, databaseItem => {
@@ -204,11 +220,9 @@ export class StockItemManagerService implements AppSubject {
                     databaseItem.unit
                 );
 
-                this.addItemToStockMap(actualItem, stockMap);
+                this.addItemToStockMap(actualItem, this.stockMap);
             })
         })
-
-        return Promise.resolve(stockMap);
     }
     
     /**

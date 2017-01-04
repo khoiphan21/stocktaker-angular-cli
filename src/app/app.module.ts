@@ -52,10 +52,10 @@ import { LoginPageComponent } from './login-page/login-page.component';
   providers: [
     DashboardManagerService,
     StockQuantityManagerService,
+    StockService,
     StockItemManagerService,
     StocktakeManagerService,
-    SideMenuService,
-    StockService
+    SideMenuService
   ],
   bootstrap: [AppComponent]
 })

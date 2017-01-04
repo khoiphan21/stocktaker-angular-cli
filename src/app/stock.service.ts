@@ -22,7 +22,7 @@ export class StockService {
    * The database containing all metadata of the items, including
    * all the categories and sections
    */
-  private _stockInfoDatabase;
+  _stockInfoDatabase;
 
   constructor() {
   }
@@ -43,7 +43,7 @@ export class StockService {
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-items');
     this._stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stock-info');
-    // this.testInitialDatabase();
+    
   }
 
   /**
@@ -60,10 +60,12 @@ export class StockService {
    * Initialise Kerko's database
    */
   initKerkoDB() {
+    console.log('initialiazing kerko\'s db');
     this._warehouseDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-items');
     this._stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-stock-info');
+    
   }
 
   /**
@@ -132,6 +134,7 @@ export class StockService {
    * @return  a promise of an array of the sections
    */
   getAllSections(): Promise<Section[]> {
+    console.log(this._stockInfoDatabase);
     return this._stockInfoDatabase.get('sections').then(sections => {
       return sections.sectionList;
     });
