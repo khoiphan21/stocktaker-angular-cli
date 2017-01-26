@@ -15,6 +15,9 @@ export class CategoryDisplayComponent implements OnInit, OnChanges {
   // Variable to determine whether the categories are shown
   @Input()
   private isShown: boolean;
+  // Variable to determine whether this is for "stocktake"
+  @Input()
+  private isStocktake: boolean;
 
   constructor(
     private stockItemManager: StockItemManagerService

@@ -2,7 +2,9 @@
   <app-section-heading [title]="section.name" (click)="toggleContent(section)"></app-section-heading>
   <div class="section-content">
     <app-category-display
-      [categoryList]="section.categoryList" [isShown]="section.isContentShown">
+      [categoryList]="section.categoryList" 
+      [isShown]="section.isContentShown"
+      [isStocktake]="isStocktake">
     </app-category-display>
   </div>
 </div>

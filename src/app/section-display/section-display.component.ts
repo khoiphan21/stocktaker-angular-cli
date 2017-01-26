@@ -12,6 +12,9 @@ export class SectionDisplayComponent implements OnInit {
   // The section object for this section display
   @Input()
   private sections: Section[];
+  // Variable to control whether this is for stock-taking
+  @Input()
+  private isStocktake: boolean;
 
   constructor(
     private stockItemManager: StockItemManagerService

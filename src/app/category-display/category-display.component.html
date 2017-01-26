@@ -5,8 +5,16 @@
       (click)="toggleItemDisplay(category)">
     </app-category-heading>
     <div class="category-content">
-      <app-stock-item [categoryId]="category.name" [isShown]="category.isContentShown">
+      <app-stock-item 
+        [categoryId]="category.name" 
+        [isShown]="category.isContentShown"
+        *ngIf="!isStocktake">
       </app-stock-item>
+      <app-stocktake-item 
+        [categoryId]="category.name"
+        [isShown]="category.isContentShown"
+        *ngIf="isStocktake">
+      </app-stocktake-item>
     </div>
   </div>
 </div>

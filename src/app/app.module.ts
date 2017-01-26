@@ -26,6 +26,8 @@ import { AddNewComponent } from './add-new/add-new.component';
 import { StockService } from './stock.service';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { StockTakeComponent } from './stock-take/stock-take.component';
+import { StockTakeWarehouseComponent } from './stock-take-warehouse/stock-take-warehouse.component';
+import { StocktakeItemComponent } from './stocktake-item/stocktake-item.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { StockTakeComponent } from './stock-take/stock-take.component';
     AddNewMenuComponent,
     AddNewComponent,
     LoginPageComponent,
-    StockTakeComponent
+    StockTakeComponent,
+    StockTakeWarehouseComponent,
+    StocktakeItemComponent
   ],
   imports: [
     BrowserModule,

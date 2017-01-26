@@ -1,0 +1,24 @@
+@media only screen and (max-height: 1080px) {
+    content {
+        height: 90vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .stock-take-button {
+        height: 180px;
+        width: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(102, 102, 102);
+        border-radius: 5px;
+    }
+    a {
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 1.2em;
+        color: rgb(220, 220, 220);
+    }
+}

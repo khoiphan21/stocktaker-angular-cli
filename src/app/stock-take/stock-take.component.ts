@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./stock-take.component.css']
 })
 export class StockTakeComponent implements OnInit {
+  // Header title
+  private stockTakeTitle = 'STOCKTAKE';
 
   constructor() { }
 

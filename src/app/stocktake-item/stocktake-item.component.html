@@ -1,0 +1,13 @@
+<div *ngIf="isShown">
+  <div class="wrapper" *ngFor="let item of items">
+    <img class="complete-box"/>
+    <content>
+      <img class="thumbnail"/>
+      <div class="item-details">
+        <h1 class="title">{{item.name}}</h1>
+        <p>Unit: {{item.unit}}</p>
+        <button>Count</button>
+      </div>
+    </content>
+  </div>
+</div>

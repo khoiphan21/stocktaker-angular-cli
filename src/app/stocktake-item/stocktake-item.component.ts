@@ -1,19 +1,21 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WarehouseStockItem } from '../shared/classes/warehouse-stock-item';
 import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
+import { WarehouseStockItem } from '../shared/classes/warehouse-stock-item';
 
 @Component({
-  selector: 'app-stock-item',
-  templateUrl: './stock-item.component.html',
-  styleUrls: ['./stock-item.component.css']
+  selector: 'app-stocktake-item',
+  templateUrl: './stocktake-item.component.html',
+  styleUrls: ['./stocktake-item.component.css']
 })
-export class StockItemComponent implements OnInit {
-  // The model of this item display
+export class StocktakeItemComponent implements OnInit {
+  // The id of the category model for this display
   @Input()
   private categoryId: string;
-  // The variable controlling whether the list of items is shown
+
+  // variable controlling whether the list of items is shown
   @Input()
   private isShown: boolean;
+
   // The list of items to display
   private items: WarehouseStockItem[];
 

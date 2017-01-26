@@ -1,0 +1,4 @@
+<app-top-header [title]="stockTakeTitle"></app-top-header>
+<content *ngIf="sections">
+  <app-section-display [sections]="sections" [isStocktake]="true"></app-section-display>
+</content>
