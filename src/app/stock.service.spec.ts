@@ -48,6 +48,10 @@ describe('Service: Stock (Isolated)', () => {
       // if control reaches here, then all is well
       console.log(items);
       done();
+    }).catch(error => {
+      expect(false).toBe(true);
+      console.log(error);
+      done();
     });
   });
 

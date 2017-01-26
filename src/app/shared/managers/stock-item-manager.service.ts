@@ -37,11 +37,12 @@ export class StockItemManagerService implements AppSubject {
             this.stockService.initTestDB();
         }
 
-        
-
-        console.log(this.stockService);
-
-        // stockService.initKerkoDB();
+        // Now load the list of current items into the stockMap
+        this.stockService.getAllItems().then(items => {
+            _.each(items, item => {
+                this.addItemToStockMap(item, this.stockMap);
+            });
+        });
     }
 
     /**
@@ -70,9 +71,15 @@ export class StockItemManagerService implements AppSubject {
      *         and null if the category does not exist
      */
     getItemListForCategory(categoryName: string): WarehouseStockItem[] {
+        this.stockService.getAllItems().then(items => {
+            console.log(items);
+        })
+
         if (!_.contains(_.allKeys(this.stockMap), categoryName)) {
             this.stockMap[categoryName] = [];
         }
+        // console.log('stockmap is currently:');
+        // console.log(this.stockMap);
         return this.stockMap[categoryName];
     }
 
@@ -161,7 +168,6 @@ export class StockItemManagerService implements AppSubject {
      *            the order of sections in the array will be random
      */
     getAllSections(): Promise<Section[]> {
-        console.log(this.stockService);
         return this.stockService.getAllSections().then( (databaseSections: Section[]) => {
             let finalSectionList: Section[] = [];
 

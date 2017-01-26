@@ -23,6 +23,7 @@ export class StockItemComponent implements OnInit {
 
   ngOnInit() {
     this.items = this.stockItemManager.getItemListForCategory(this.categoryId);
+    console.log(this.items);
   }
 
 }

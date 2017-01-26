@@ -134,7 +134,6 @@ export class StockService {
    * @return  a promise of an array of the sections
    */
   getAllSections(): Promise<Section[]> {
-    console.log(this._stockInfoDatabase);
     return this._stockInfoDatabase.get('sections').then(sections => {
       return sections.sectionList;
     });

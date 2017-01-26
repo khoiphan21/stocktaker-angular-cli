@@ -25,6 +25,7 @@ import { AddNewMenuComponent } from './add-new-menu/add-new-menu.component';
 import { AddNewComponent } from './add-new/add-new.component';
 import { StockService } from './stock.service';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { StockTakeComponent } from './stock-take/stock-take.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
     StockItemComponent,
     AddNewMenuComponent,
     AddNewComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    StockTakeComponent
   ],
   imports: [
     BrowserModule,
