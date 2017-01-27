@@ -104,5 +104,13 @@ describe('Service: Stock (Isolated)', () => {
       expect(false).toBe(true); // will definitely fail
       done();
     });
-  }, 10000)
+  }, 10000);
+
+  it('should retrieve a history correctly', done => {
+    let testSection = new Section('warehouse');
+    service.getHistory(testSection.name).then(history => {
+      console.log(history);
+      done();
+    });
+  });
 });

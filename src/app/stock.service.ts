@@ -15,14 +15,19 @@ export class StockService {
    */
   private _warehouseDatabase;
   /**
-   * The array containing all warehouse items
-   */
-  private warehouseItems: Array<WarehouseStockItem>;
-  /**
    * The database containing all metadata of the items, including
    * all the categories and sections
    */
-  _stockInfoDatabase;
+  private _stockInfoDatabase;
+  /**
+   * The database containing all stocktaking history
+   */
+  private _stockTakingHistory;
+  /**
+   * The array containing all warehouse items
+   */
+  private warehouseItems: Array<WarehouseStockItem>;
+  
 
   constructor() {
   }
@@ -43,7 +48,8 @@ export class StockService {
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-items');
     this._stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stock-info');
-    
+    this._stockTakingHistory = new PouchDB(
+      'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stocktaking-history');
   }
 
   /**
@@ -54,6 +60,8 @@ export class StockService {
       'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-items');
     this._stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-stock-info');
+    this._stockTakingHistory = new PouchDB(
+      'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-stocktaking-history');
   }
 
   /**
@@ -66,6 +74,17 @@ export class StockService {
     this._stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-stock-info');
     
+  }
+
+  /**
+   * Get the stocktaking history for a certain section
+   */
+  getHistory(sectionId: string): Promise<any> {
+    return this._stockTakingHistory.get(sectionId).then(sectionHistory => {
+      return sectionHistory['history'];
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   /**
@@ -111,6 +130,15 @@ export class StockService {
 
   updateWarehouseItem(item: WarehouseStockItem) {
     return this._warehouseDatabase.put(item);
+  }
+
+  updateAllItemAmount(items: WarehouseStockItem[]) {
+    _.each(items, item => {
+      this.getItem(item._id).then(databaseItem => {
+        databaseItem.currentAmount = item.currentAmount;
+        this._warehouseDatabase.put(databaseItem);
+      })
+    })
   }
 
   deleteWareHouseItem(item: WarehouseStockItem): Promise<ServiceResponse> {

@@ -1,4 +1,18 @@
 <app-top-header [title]="stockTakeTitle"></app-top-header>
 <content *ngIf="sections">
-  <app-section-display [sections]="sections" [isStocktake]="true"></app-section-display>
+  <!--SECTION DISPLAY-->
+  <div class="container" *ngFor="let section of sections">
+    <app-section-heading 
+        [title]="section.name" 
+        (click)="toggleSectionContent(section)">
+    </app-section-heading>
+    <div class="section-content">
+      <app-category-display
+        [categoryList]="section.categoryList" 
+        [isShown]="section.isContentShown"
+        [isStocktake]="true">
+      </app-category-display>
+    </div>
+    <button (click)="recordStock()">Complete</button>
+  </div>
 </content>

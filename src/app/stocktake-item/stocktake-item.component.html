@@ -6,7 +6,14 @@
       <div class="item-details">
         <h1 class="title">{{item.name}}</h1>
         <p>Unit: {{item.unit}}</p>
-        <button>Count</button>
+        <form>
+          <label for="currentAmount">Amount: </label>
+          <input id="currentAmount" 
+            name="currentAmount" 
+            type="number" 
+            placeholder="{{item.currentAmount}}" 
+            [(ngModel)]="item.currentAmount">
+        </form>
       </div>
     </content>
   </div>

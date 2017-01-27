@@ -12,8 +12,8 @@ img.complete-box {
     border: 2px solid rgb(100, 100, 100);
 }
 img.thumbnail {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     background-color: rgb(150, 150, 150);
 }
 content {
@@ -27,7 +27,7 @@ content {
     flex-grow: 1;
     margin: 0;
     padding: 0 20px;
-    height: 100px;
+    height: 80px;
     display: flex;
     flex-direction: column;
     margin-right: 20px;
@@ -47,11 +47,15 @@ p {
     margin: 0;
     font-size: 1em;
 }
-button {
-    width: 150px;
-    height: 35px;
-    background-color: rgb(102, 102, 102);
-    color: rgb(224, 224, 224);
-    border-radius: 8px;
+form {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+}
+label {
     text-transform: uppercase;
+}
+input {
+    width: 80px;
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Section } from '../shared/classes/section';
 import { StockItemManagerService } from '../shared/managers/stock-item-manager.service';
 import { AppObserver } from '../shared/classes/app-observer';
+import { WarehouseStockItem } from '../shared/classes/warehouse-stock-item';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'app-stock-take-warehouse',
@@ -27,6 +29,20 @@ export class StockTakeWarehouseComponent implements OnInit, AppObserver {
     this.stockItemManager.getAllSections().then(
       sections => this.sections = sections
     )
+  }
+
+  /**
+   * Send the current stock information to the database, as well as update the 
+   * stock-taking history database
+   */
+  recordStock() {
+    this.stockItemManager.updateAllItemAmount();
+    this.stockItemManager.recordStockTakeHistory();
+  }
+
+  // Show/hide the content (the categories under this section)
+  toggleSectionContent(section: Section) {
+    section.isContentShown = section.isContentShown ? false : true;
   }
 
   /**

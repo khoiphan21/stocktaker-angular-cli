@@ -6,6 +6,9 @@ import { ServiceResponse } from '../../classes/service-response';
 import { ServiceResponseStatus } from '../../classes/service-response-status';
 
 describe('Manager: Stock Item Manager', () => {
+    let stockService: StockService;
+    let itemManager: StockItemManagerService;
+
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
@@ -13,6 +16,9 @@ describe('Manager: Stock Item Manager', () => {
                 StockItemManagerService
             ]
         });
+        stockService = new StockService();
+        stockService.initTestDB();
+        itemManager = new StockItemManagerService(stockService);
     });
 
     it('should create a service', inject([StockItemManagerService], (service: StockItemManagerService) => {
@@ -48,5 +54,21 @@ describe('Manager: Stock Item Manager', () => {
         expect(retrievedItem).toEqual(item);
     }));
 
+    it('should load items from the database correctly', done => {
+        setTimeout(() => {
+            itemManager.printStockMap();
+            // if nothing is wrong, then should be okay
+            done();
+        }, 3000)
+    });
 
+    it('should update all items amount successfully',
+    inject([StockItemManagerService], (service: StockItemManagerService) => {
+        itemManager.loadItemsFromDatabase().then(() => {
+            // itemManager.printStockMap();
+            itemManager.updateAllItemAmount();
+            // if control reaches here then all is well
+        });
+    }));
+        
 });

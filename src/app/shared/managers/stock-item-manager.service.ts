@@ -32,17 +32,16 @@ export class StockItemManagerService implements AppSubject {
                 case 'khoi':
                     this.stockService.initDB();
                     break;
+                default:
+                    this.stockService.initTestDB();
+                    break;
             }
         } else {
             this.stockService.initTestDB();
         }
 
         // Now load the list of current items into the stockMap
-        this.stockService.getAllItems().then(items => {
-            _.each(items, item => {
-                this.addItemToStockMap(item, this.stockMap);
-            });
-        });
+        this.loadItemsFromDatabase();
     }
 
     /**
@@ -63,6 +62,31 @@ export class StockItemManagerService implements AppSubject {
     }
 
     /**
+     * Update the current amount of all items present in the stock map
+     */
+    updateAllItemAmount() {
+        let items: WarehouseStockItem[] = [];
+
+        console.log(this.stockMap);
+
+        _.each(_.values(this.stockMap), itemArray => {
+            items = items.concat(itemArray);
+        });
+
+        this.stockService.updateAllItemAmount(items);
+
+        console.log(items);
+
+    }
+
+    /**
+     * Record today's stock taking into a database
+     */
+    recordStockTakeHistory() {
+
+    }
+
+    /**
      * Get the list of items for the category of the given name
      *
      * @param categoryName: the name (lowercase) of the category whose items
@@ -71,15 +95,6 @@ export class StockItemManagerService implements AppSubject {
      *         and null if the category does not exist
      */
     getItemListForCategory(categoryName: string): WarehouseStockItem[] {
-        this.stockService.getAllItems().then(items => {
-            console.log(items);
-        })
-
-        if (!_.contains(_.allKeys(this.stockMap), categoryName)) {
-            this.stockMap[categoryName] = [];
-        }
-        // console.log('stockmap is currently:');
-        // console.log(this.stockMap);
         return this.stockMap[categoryName];
     }
 
@@ -213,10 +228,13 @@ export class StockItemManagerService implements AppSubject {
      *
      * @return  a promise of the actual map of categories to stock items
      */
-    loadItemsFromDatabase() {
-        this.stockMap = {};
+    loadItemsFromDatabase(): Promise<any> {
+        // Create a new stockmap variable. this is necessary due to some
+        // issues with garbage collection when trying this.stockMap = {}
+        let newStockMap = {};
 
-        this.stockService.getAllItems().then( items => {
+        return this.stockService.getAllItems().then( items => {
+            console.log(items);
             _.each(items, databaseItem => {
                 let actualItem = new WarehouseStockItem(
                     databaseItem.name,
@@ -226,8 +244,14 @@ export class StockItemManagerService implements AppSubject {
                     databaseItem.unit
                 );
 
-                this.addItemToStockMap(actualItem, this.stockMap);
-            })
+                if (databaseItem.currentAmount) {
+                    actualItem.changeQuantity(databaseItem.currentAmount);
+                }
+
+                this.addItemToStockMap(actualItem, newStockMap);
+            });
+
+            this.stockMap = newStockMap;
         })
     }
     
@@ -242,5 +266,9 @@ export class StockItemManagerService implements AppSubject {
         }
         // Now add the item to the category
         stockMap[item.categoryId].push(item);
+    }
+
+    printStockMap() {
+        console.log(this.stockMap);
     }
 }
