@@ -4,6 +4,7 @@ import { StockItemManagerService } from '../shared/managers/stock-item-manager.s
 import { AppObserver } from '../shared/classes/app-observer';
 import { WarehouseStockItem } from '../shared/classes/warehouse-stock-item';
 import * as _ from 'underscore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stock-take-warehouse',
@@ -17,7 +18,8 @@ export class StockTakeWarehouseComponent implements OnInit, AppObserver {
   private sections: Section[];
 
   constructor(
-    private stockItemManager: StockItemManagerService
+    private stockItemManager: StockItemManagerService,
+    private router: Router
   ) {
     this.sections = [];
   }
@@ -38,6 +40,9 @@ export class StockTakeWarehouseComponent implements OnInit, AppObserver {
   recordStock() {
     this.stockItemManager.updateAllItemAmount();
     this.stockItemManager.recordStockTakeHistory();
+
+    // Now navigate back to dashboard
+    this.router.navigate(['/dashboard']);
   }
 
   // Show/hide the content (the categories under this section)

@@ -7,9 +7,13 @@ import { Section } from './shared/classes/section';
 
 let PouchDB = require('pouchdb');
 import * as _ from 'underscore';
+import { AppSubject } from './shared/classes/app-subject';
+import { AppObserver } from './shared/classes/app-observer';
 
 @Injectable()
-export class StockService {
+export class StockService implements AppSubject{
+  // All the observers of the database
+  private observers: AppObserver[];
   /** 
    * The database of all the metadata: categories and sections
    */
@@ -30,6 +34,26 @@ export class StockService {
   
 
   constructor() {
+    this.observers = [];
+  }
+
+  /**
+   * Add an observer that will need to react upon changes in the database
+   */
+  addObserver(observer: AppObserver) {
+      this.observers.push(observer);
+      this.notifyAll();
+  }
+
+  /**
+   * Notify all observers
+   */
+  notifyAll() {
+    console.log('Stock Service is attempting to notify observers');
+      _.each(this.observers, (observer: AppObserver) => {
+        console.log('Stock Service is notifying an observer');
+          observer.update();
+      })
   }
 
   testInitialDatabase() {
@@ -50,6 +74,16 @@ export class StockService {
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stock-info');
     this._stockTakingHistory = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stocktaking-history');
+    // Listen for changes on the database.
+    this._warehouseDatabase.changes({
+      live: true,
+      since: 'now',
+      include_docs: true
+    }).on ('change', (change) => {
+      console.log('database has changed');
+      this.notifyAll();
+    });
+    this.notifyAll();
   }
 
   /**
@@ -62,6 +96,16 @@ export class StockService {
       'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-stock-info');
     this._stockTakingHistory = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-stocktaking-history');
+    // Listen for changes on the database.
+    this._warehouseDatabase.changes({
+      live: true,
+      since: 'now',
+      include_docs: true
+    }).on ('change', (change) => {
+      console.log('database has changed');
+      this.notifyAll();
+    });
+    this.notifyAll();
   }
 
   /**
@@ -73,7 +117,16 @@ export class StockService {
       'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-items');
     this._stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-stock-info');
-    
+    // Listen for changes on the database.
+    this._warehouseDatabase.changes({
+      live: true,
+      since: 'now',
+      include_docs: true
+    }).on ('change', (change) => {
+      console.log('database has changed');
+      this.notifyAll();
+    });
+    this.notifyAll();
   }
 
   /**
@@ -277,36 +330,16 @@ export class StockService {
    * to real WarehouseStockItems
    */
   getAllItems(): Promise<WarehouseStockItem[]> {
-    if (!this.warehouseItems) {
-      return this._warehouseDatabase.allDocs({ include_docs: true })
-          .then(docs => {
-            this.warehouseItems = docs.rows.map(row => {
-              return row.doc;
-            });
-
-            // Listen for changes on the database.
-            this._warehouseDatabase.changes({
-              live: true,
-              since: 'now',
-              include_docs: true
-            }).on ('change', this.onDatabaseChange);
-
-            return this.warehouseItems;
+    
+    return this._warehouseDatabase.allDocs({ include_docs: true })
+        .then(docs => {
+          this.warehouseItems = docs.rows.map(row => {
+            return row.doc;
           });
-    } else {
-      return Promise.resolve(this.warehouseItems);
-    }
-  }
-  private onDatabaseChange = (change) => {
-    // let index: number = _.findIndex(this.warehouseItems, change.id);
-    // let item = this.warehouseItems[index];
 
-    // if (change.deleted) {
-    //   if (item) {
-    //     this.warehouseItems.splice(index, 1); // delete
-    //   } else {
-    //     if (item && item.name.toLowerCase() === change.name)
-    //   }
+          return this.warehouseItems;
+        });
+    
   }
   
   /**

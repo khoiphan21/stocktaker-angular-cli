@@ -35,12 +35,10 @@ export class WarehouseStockItem {
             this.quantityManager.setLowStock(this);
         }
     }
-    // Change the quantity of an item, which will also
-    // notify the StockQuantityManager to re-check all stocks
+    // Change the quantity of an item
     changeQuantity(amount: number) {
         if (this.quantityManager != null) {
             this.currentAmount = amount;
-            this.quantityManager.checkStock();
         }
     }
 

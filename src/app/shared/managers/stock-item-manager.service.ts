@@ -8,6 +8,7 @@ import { AppObserver } from '../classes/app-observer';
 import { AppSubject } from '../classes/app-subject';
 import { ServiceResponse } from '../classes/service-response';
 import { ServiceResponseStatus } from '../classes/service-response-status';
+import { StockQuantityManagerService } from './stock-quantity-manager.service';
 
 @Injectable()
 export class StockItemManagerService implements AppSubject {
@@ -18,7 +19,10 @@ export class StockItemManagerService implements AppSubject {
     // Variable to make sure the database is loaded before any calls is made
     private isDatabaseLoaded: boolean = false;
 
-    constructor(private stockService: StockService) {
+    constructor(
+        private stockService: StockService,
+        private quantityManager: StockQuantityManagerService
+    ) {
         this.sectionList = [];
         this.stockMap = {};
         this.observers = [];
@@ -42,6 +46,9 @@ export class StockItemManagerService implements AppSubject {
 
         // Now load the list of current items into the stockMap
         this.loadItemsFromDatabase();
+
+        // Now notify all observers that the item manager is ready
+        this.notifyAll();
     }
 
     /**
@@ -62,21 +69,33 @@ export class StockItemManagerService implements AppSubject {
     }
 
     /**
+     * Retrieve all items from the database
+     */
+    getAllItems(): Promise<WarehouseStockItem[]> {
+        return this.stockService.getAllItems();
+    }
+
+    /**
      * Update the current amount of all items present in the stock map
      */
     updateAllItemAmount() {
         let items: WarehouseStockItem[] = [];
 
-        console.log(this.stockMap);
-
+        // Put all items into an array to be passed to the database service
         _.each(_.values(this.stockMap), itemArray => {
             items = items.concat(itemArray);
         });
 
         this.stockService.updateAllItemAmount(items);
 
-        console.log(items);
-
+        // Now do a stock check to create tasks for items that are low in stock
+        _.each(items, item => {
+            if (item.currentAmount <= item.minAmount) {
+                this.quantityManager.setLowStock(item);
+            }
+        });
+        
+        this.notifyAll();
     }
 
     /**
