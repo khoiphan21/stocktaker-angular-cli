@@ -2,7 +2,15 @@
 <content>
     <app-block-heading [title]="restockTitle"></app-block-heading>
     <section *ngFor="let item of lowStockList">
-        <p>{{item._id}}, amount: {{item.currentAmount}}</p>
+        <div class="task-item">
+            <img class="thumbnail"/>
+            <img class="status"/>
+            <div class="item-details">
+                <h1>{{item.name}}</h1>
+                <p>{{item.maxAmount - item.currentAmount}} {{item.unit}}</p>
+                <button>ordered</button>
+            </div>
+        </div>
     </section>
     <app-block-heading [title]="stockOverviewTitle"></app-block-heading>
 </content>

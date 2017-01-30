@@ -7,3 +7,7 @@
     background-color: rgb(100, 100, 100);
     color: rgb(220, 220, 220);
 }
+h1, p {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+}
