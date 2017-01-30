@@ -29,8 +29,9 @@ export class StockTakeWarehouseComponent implements OnInit, AppObserver {
     this.stockItemManager.addObserver(this);
 
     this.stockItemManager.getAllSections().then(
-      sections => this.sections = sections
-    )
+      sections => {
+        this.sections = sections;
+      })
   }
 
   /**

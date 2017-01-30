@@ -6,6 +6,7 @@
     border-radius: 5px;
     background-color: rgb(100, 100, 100);
     color: rgb(220, 220, 220);
+    text-transform: uppercase;
 }
 h1, p {
     font-family: 'Montserrat', sans-serif;
