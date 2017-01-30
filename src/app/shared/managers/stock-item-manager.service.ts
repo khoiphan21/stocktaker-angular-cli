@@ -31,19 +31,32 @@ export class StockItemManagerService implements AppSubject {
             let user: string = localStorage.getItem('user');
             switch(user) {
                 case 'kerko':
-                    this.stockService.initKerkoDB();
+                    this.loginWithUser('kerko');
                     break;
                 case 'khoi':
-                    this.stockService.initDB();
+                    this.loginWithUser('khoi');
                     break;
                 default:
-                    this.stockService.initTestDB();
+                    this.loginWithUser('test');
                     break;
             }
         } else {
-            this.stockService.initTestDB();
+            this.loginWithUser('test');
         }
+    }
 
+    loginWithUser(userId: string) {
+        switch(userId) {
+            case 'kerko':
+                this.stockService.initKerkoDB();
+                break;
+            case 'khoi':
+                this.stockService.initDB();
+                break;
+            default:
+                this.stockService.initTestDB();
+                break;
+        }
         // Now load the list of current items into the stockMap
         this.loadItemsFromDatabase();
 

@@ -30,6 +30,8 @@ export class LoginPageComponent implements OnInit {
       return;
     }
 
+    this.itemManager.loginWithUser(this.username);
+
     this.router.navigate(['/dashboard']);
   }
 

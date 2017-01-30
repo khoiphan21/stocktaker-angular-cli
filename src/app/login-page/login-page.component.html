@@ -1,7 +1,7 @@
 <div class="wrapper">
   <content>
     <h1 class="header">Stocktaker</h1>
-    <form>
+    <div>
       <p>
         <label for="username">Username: </label>
         <input id="username" [(ngModel)]="username" name="username" type="text" placeholder=""/>
@@ -12,6 +12,6 @@
       </p>
       <p class="error" *ngIf="error">Wrong username or password. Please try again</p>
       <button class="button" (click)="login()">Sign In</button>
-    </form>
+    </div>
   </content>
 </div>
