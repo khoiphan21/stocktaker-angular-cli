@@ -11,7 +11,7 @@ import { ServiceResponseStatus } from '../classes/service-response-status';
 import { StockQuantityManagerService } from './stock-quantity-manager.service';
 
 @Injectable()
-export class StockItemManagerService implements AppSubject {
+export class StockItemManagerService implements AppSubject, AppObserver {
     private sectionList: Section[];
     private stockMap;
     private observers: AppObserver[];
@@ -62,6 +62,10 @@ export class StockItemManagerService implements AppSubject {
 
         // Now notify all observers that the item manager is ready
         this.notifyAll();
+    }
+
+    update() {
+        this.loadItemsFromDatabase();
     }
 
     /**
@@ -137,19 +141,15 @@ export class StockItemManagerService implements AppSubject {
      * @param item: the item to be added to the map
      */
     addNewItem(item: WarehouseStockItem): Promise<ServiceResponse> {
-        if (!_.contains(_.allKeys(this.stockMap), item.categoryId)) {
-            return Promise.reject('The category does not exist in the database');
-        } else {
-            this.stockService.addWarehouseItem(item).then( () => {
-                this.addItemToStockMap(item, this.stockMap);
-                return Promise.resolve(new ServiceResponse(
-                    ServiceResponseStatus.OK, 'Item: ' + item.name + ' is added successfully'
-                ));
-            }).catch( (error: ServiceResponse) => {
-                console.log(error);
-                return Promise.reject(error);
-            });
-        }
+        return this.stockService.addWarehouseItem(item).then( () => {
+            this.addItemToStockMap(item, this.stockMap);
+            return Promise.resolve(new ServiceResponse(
+                ServiceResponseStatus.OK, 'Item: ' + item.name + ' is added successfully'
+            ));
+        }).catch( (error: ServiceResponse) => {
+            console.log(error);
+            return Promise.reject(error);
+        });
     }
 
     addNewCategory(category: Category) {
@@ -284,6 +284,8 @@ export class StockItemManagerService implements AppSubject {
             });
 
             this.stockMap = newStockMap;
+
+            console.log(this.stockMap);
         })
     }
     
