@@ -10,6 +10,8 @@ export class WarehouseStockItem {
     name: string;
     imageURL: string;
     categoryId: string;
+    isOrdered: boolean; // Whether this item has been ordered for re-stocking
+
     quantityManager: StockQuantityManagerService;
 
     constructor(
@@ -17,13 +19,17 @@ export class WarehouseStockItem {
         categoryId: string,
         maxAmount: number,
         minAmount: number,
-        unit: string
+        unit: string,
+        currentAmount: number = 0,
+        isOrdered: boolean = false
     ) {
         this.name = name;
         this.categoryId = categoryId;
         this.maxAmount = maxAmount;
         this.minAmount = minAmount;
         this.unit = unit;
+        this.currentAmount = currentAmount;
+        this.isOrdered = isOrdered;
 
         // create an id for the item based on the name
         this._id = name.toLowerCase();

@@ -17,16 +17,12 @@ export class StockService implements AppSubject{
   /** 
    * The database of all the metadata: categories and sections
    */
-  private _warehouseDatabase;
+  private warehouseDatabase;
   /**
    * The database containing all metadata of the items, including
    * all the categories and sections
    */
-  private _stockInfoDatabase;
-  /**
-   * The database containing all stocktaking history
-   */
-  private _stockTakingHistory;
+  private stockInfoDatabase;
   /**
    * The array containing all warehouse items
    */
@@ -58,7 +54,7 @@ export class StockService implements AppSubject{
 
   testInitialDatabase() {
     // Print the whole database
-    console.log(this._warehouseDatabase);
+    console.log(this.warehouseDatabase);
     // Print the items in the database
     this.getAllItems().then(items => console.log(items));
   }
@@ -68,14 +64,12 @@ export class StockService implements AppSubject{
    * Optional 'testInitialDatabase' line for testInitialDatabaseing
    */
   initDB() {
-    this._warehouseDatabase = new PouchDB(
+    this.warehouseDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-items');
-    this._stockInfoDatabase = new PouchDB(
+    this.stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stock-info');
-    this._stockTakingHistory = new PouchDB(
-      'http://admin:oh5nWhWX@104.155.219.39:5984/stocktaker-stocktaking-history');
     // Listen for changes on the database.
-    this._warehouseDatabase.changes({
+    this.warehouseDatabase.changes({
       live: true,
       since: 'now',
       include_docs: true
@@ -90,14 +84,12 @@ export class StockService implements AppSubject{
    * Initialise the databases for testing
    */
   initTestDB() {
-    this._warehouseDatabase = new PouchDB(
+    this.warehouseDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-items');
-    this._stockInfoDatabase = new PouchDB(
+    this.stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-stock-info');
-    this._stockTakingHistory = new PouchDB(
-      'http://admin:oh5nWhWX@104.155.219.39:5984/test-stocktaker-stocktaking-history');
     // Listen for changes on the database.
-    this._warehouseDatabase.changes({
+    this.warehouseDatabase.changes({
       live: true,
       since: 'now',
       include_docs: true
@@ -113,12 +105,12 @@ export class StockService implements AppSubject{
    */
   initKerkoDB() {
     console.log('initialiazing kerko\'s db');
-    this._warehouseDatabase = new PouchDB(
+    this.warehouseDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-items');
-    this._stockInfoDatabase = new PouchDB(
+    this.stockInfoDatabase = new PouchDB(
       'http://admin:oh5nWhWX@104.155.219.39:5984/julia-warehouse-stock-info');
     // Listen for changes on the database.
-    this._warehouseDatabase.changes({
+    this.warehouseDatabase.changes({
       live: true,
       since: 'now',
       include_docs: true
@@ -127,17 +119,6 @@ export class StockService implements AppSubject{
       this.notifyAll();
     });
     this.notifyAll();
-  }
-
-  /**
-   * Get the stocktaking history for a certain section
-   */
-  getHistory(sectionId: string): Promise<any> {
-    return this._stockTakingHistory.get(sectionId).then(sectionHistory => {
-      return sectionHistory['history'];
-    }).catch(error => {
-      console.log(error);
-    });
   }
 
   /**
@@ -154,7 +135,7 @@ export class StockService implements AppSubject{
         ServiceResponseStatus.ERROR, 'This item already exists in the database'
       ));
     } else {
-      return this._warehouseDatabase.put(item).then(response => {
+      return this.warehouseDatabase.put(item).then(response => {
         // Now need to look what is in the response
         // console.log(response);
 
@@ -182,21 +163,21 @@ export class StockService implements AppSubject{
   }
 
   updateWarehouseItem(item: WarehouseStockItem) {
-    return this._warehouseDatabase.put(item);
+    return this.warehouseDatabase.put(item);
   }
 
   updateAllItemAmount(items: WarehouseStockItem[]) {
     _.each(items, item => {
       this.getItem(item._id).then(databaseItem => {
         databaseItem.currentAmount = item.currentAmount;
-        this._warehouseDatabase.put(databaseItem);
+        this.warehouseDatabase.put(databaseItem);
       })
     })
   }
 
   deleteWareHouseItem(item: WarehouseStockItem): Promise<ServiceResponse> {
-    return this._warehouseDatabase.get(item.name).then( doc =>{
-      this._warehouseDatabase.remove(doc._id, doc._rev);
+    return this.warehouseDatabase.get(item.name).then( doc =>{
+      this.warehouseDatabase.remove(doc._id, doc._rev);
       return new ServiceResponse(ServiceResponseStatus.OK, 'item deleted successfully');
     }).catch( error => {
       return new ServiceResponse(ServiceResponseStatus.ERROR, error);
@@ -204,7 +185,7 @@ export class StockService implements AppSubject{
   }
 
   getItem(itemId: string): Promise<WarehouseStockItem> {
-    return this._warehouseDatabase.get(itemId);
+    return this.warehouseDatabase.get(itemId);
   }
 
   /**
@@ -215,7 +196,7 @@ export class StockService implements AppSubject{
    * @return  a promise of an array of the sections
    */
   getAllSections(): Promise<Section[]> {
-    return this._stockInfoDatabase.get('sections').then(sections => {
+    return this.stockInfoDatabase.get('sections').then(sections => {
       return sections.sectionList;
     });
   }
@@ -234,8 +215,8 @@ export class StockService implements AppSubject{
       })
     })
 
-    return this._stockInfoDatabase.get('sections').then(doc => {
-      return this._stockInfoDatabase.put({
+    return this.stockInfoDatabase.get('sections').then(doc => {
+      return this.stockInfoDatabase.put({
         _id: 'sections',
         _rev: doc._rev,
         sectionList: jsonSectionList
@@ -257,7 +238,7 @@ export class StockService implements AppSubject{
    * @return  a promise containing the response of the service
    */
   addSection(section: Section): Promise<ServiceResponse> {
-    return this._stockInfoDatabase.get('sections').then(doc => {
+    return this.stockInfoDatabase.get('sections').then(doc => {
       // First check if the section is already in the list of section
       // Checking mechanism: check by the name of the section
       let currentList = doc.sectionList;
@@ -269,7 +250,7 @@ export class StockService implements AppSubject{
       // If control reaches here, the section should be safe to be added
       let newSectionList = doc.sectionList;
       newSectionList.push(section);
-      return this._stockInfoDatabase.put({
+      return this.stockInfoDatabase.put({
         _id: 'sections',
         _rev: doc._rev,
         sectionList: newSectionList
@@ -291,7 +272,7 @@ export class StockService implements AppSubject{
    * @return  a promise containing the response of the service
    */
   deleteSection(section: Section): Promise<ServiceResponse> {
-    return this._stockInfoDatabase.get('sections').then(doc => {
+    return this.stockInfoDatabase.get('sections').then(doc => {
       // Retrieve the current list
       let currentList: Section[] = doc.sectionList;
 
@@ -305,7 +286,7 @@ export class StockService implements AppSubject{
         return item.name != section.name;
       });
 
-      return this._stockInfoDatabase.put({
+      return this.stockInfoDatabase.put({
         _id: 'sections',
         _rev: doc._rev,
         sectionList: newList
@@ -331,7 +312,7 @@ export class StockService implements AppSubject{
    */
   getAllItems(): Promise<WarehouseStockItem[]> {
     
-    return this._warehouseDatabase.allDocs({ include_docs: true })
+    return this.warehouseDatabase.allDocs({ include_docs: true })
         .then(docs => {
           this.warehouseItems = docs.rows.map(row => {
             return row.doc;
